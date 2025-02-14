@@ -1,23 +1,21 @@
-import React, { useState } from "react";
-import "./App.css";
-import QuestList from "./pages/QuestionList";
-import Login from "./pages/Login";
-import Home from "./pages/Home";
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import "./App.scss";
+import Header from "./components/Header/Header";
+import { Outlet } from "react-router-dom";
 
 function App() {
   return (
-    <Router>
-      <div>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/questionlist" element={<QuestList />} />
-
-        </Routes>
+    <div className="app-container">
+      <div className="header-container">
+        <Header />
       </div>
-    </Router>
+      <div className="main-container">
+        <div className="sidenav-container"></div>
+        <div className="app-content">
+          <Outlet />
+        </div>
+      </div>
+    </div>
   );
 }
+
 export default App;
