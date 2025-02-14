@@ -1,20 +1,30 @@
 {
-  "name": "frontend",
+  "name": "myapp",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@fortawesome/fontawesome-free": "^6.7.2",
-    "@testing-library/jest-dom": "^5.17.0",
-    "@testing-library/react": "^13.4.0",
-    "@testing-library/user-event": "^13.5.0",
-    "bootstrap": "^5.3.3",
+    "@fortawesome/free-solid-svg-icons": "^6.7.2",
+    "@fortawesome/react-fontawesome": "^0.2.2",
+    "axios": "0.27.2",
+    "bootstrap": "5.3.3",
     "cra-template": "1.2.0",
+    "font-awesome": "^4.7.0",
+    "lodash": "4.17.21",
+    "nprogress": "^0.2.0",
     "react": "^18.3.1",
-    "react-bootstrap": "^2.10.7",
+    "react-bootstrap": "2.10.7",
     "react-dom": "^18.3.1",
+    "react-icons": "4.4.0",
+    "react-paginate": "^8.2.0",
+    "react-pro-sidebar": "0.7.1",
+    "react-redux": "^9.2.0",
+    "react-router-dom": "^7.1.1",
     "react-scripts": "5.0.1",
-    "scss": "^0.2.4",
-    "web-vitals": "^2.1.4"
+    "react-toastify": "^11.0.2",
+    "redux": "^5.0.1",
+    "redux-persist": "^6.0.0",
+    "redux-thunk": "^3.1.0",
+    "sass": "^1.83.1"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -39,5 +49,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "web-vitals": "^4.2.4"
   }
 }
