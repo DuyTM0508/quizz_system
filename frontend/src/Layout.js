@@ -11,7 +11,6 @@ import App from "./App";
 import { ToastContainer } from "react-toastify";
 import Register from "./components/Auth/Register";
 import Flashcards from "./pages/Flashcards";
-import EditFlashcard from "./components/EditFlashCard";
 const Layout = () => {
   return (
     <>

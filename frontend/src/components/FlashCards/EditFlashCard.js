@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { getFlashcardById, updateFlashcard, getFlashcards } from "../api/flashcardApi";
-import FlashCardForm from "../components/FlashCardForm";
+import { getFlashcardById, updateFlashcard, getFlashcards } from "../../api/flashcardApi";
+import FlashCardForm from "./FlashCardForm";
 
 const EditFlashcard = ({ setFlashcards }) => {
     const { id } = useParams(); // Lấy ID từ URL

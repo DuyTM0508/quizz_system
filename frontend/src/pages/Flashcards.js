@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
 import { getFlashcards, addFlashcard, updateFlashcard, deleteFlashcard } from "../api/flashcardApi";
-import FlashCardForm from "../components/FlashCardForm";
-import FlashCardList from "../components/FlashCardList";
-import EditFlashcard from "../components/EditFlashCard"
+import FlashCardForm from "../components/FlashCards/FlashCardForm";
+import FlashCardList from "../components/FlashCards/FlashCardList";
+import EditFlashcard from "../components/FlashCards/EditFlashCard"
 
 const Flashcards = () => {
     const [flashcards, setFlashcards] = useState([]);
