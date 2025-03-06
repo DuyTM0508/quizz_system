@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const cookieSession = require("cookie-session");
+const blogRouter = require("./app/routes/blog/blog.routes");
 
 const dbConfig = require("./app/config/db.config");
 
@@ -50,6 +51,8 @@ db.mongoose
 app.get("/", (req, res) => {
   res.json({ message: "Welcome to gianglh application." });
 });
+
+app.use("/blogs", blogRouter);
 
 // routes
 require("./app/routes/auth.routes")(app);
