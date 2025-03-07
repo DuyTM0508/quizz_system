@@ -12,6 +12,8 @@ import { ToastContainer } from "react-toastify";
 import Register from "./components/Auth/Register";
 import Flashcards from "./pages/Flashcards";
 import FlashCardDetail from "./components/FlashCards/FlashCardDetail";
+import BlogPage from "./pages/blog/BlogPage";
+import BlogDetail from "./pages/blog/BlogDetail";
 const Layout = () => {
   return (
     <>
@@ -20,7 +22,12 @@ const Layout = () => {
           <Route path="/user" element={<User />}></Route>
           <Route index element={<Homepage />}></Route>
           <Route path="/flashcards/*" element={<Flashcards />} />
-          <Route path="/flashcards/view/:id" element={<FlashCardDetail />} />{" "}
+          <Route
+            path="/flashcards/view/:id"
+            element={<FlashCardDetail />}
+          />{" "}
+          <Route path="/blog" element={<BlogPage />} />{" "}
+          <Route path="/blog/:id" element={<BlogDetail />} />{" "}
           {/* <Route path="/flashcards/create" element={<CreateFlashcard />} />{" "} */}
         </Route>
         <Route path="/admin" element={<Admin />}>
