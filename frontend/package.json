@@ -11,6 +11,7 @@
     "font-awesome": "^4.7.0",
     "framer-motion": "^12.4.7",
     "lodash": "4.17.21",
+    "lucide-react": "^0.477.0",
     "nprogress": "^0.2.0",
     "react": "^18.3.1",
     "react-bootstrap": "2.10.7",
