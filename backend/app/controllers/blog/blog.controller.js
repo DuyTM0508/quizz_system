@@ -12,10 +12,19 @@ const getAllBlog = async (req, res) => {
   try {
     const blogs = await Blog.find();
 
+    const formatData = blogs.map((blog) => {
+      return {
+        id: blog._id,
+        title: blog.title,
+        description: blog.description,
+        image: blog.image,
+      };
+    });
+
     res.status(200).json({
       status: 200,
       message: "Successfully fetched all blogs",
-      data: blogs,
+      data: formatData,
     });
   } catch (error) {
     res.status(500).json({
