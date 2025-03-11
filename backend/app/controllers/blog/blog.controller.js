@@ -67,9 +67,9 @@ const getBlogDetail = async (req, res) => {
 
 //!Insert
 const insertBlog = async (req, res) => {
-  const { title, description, image } = req.body;
+  const { title, description, image, category } = req.body;
   try {
-    if (!title || !description || !image) {
+    if (!title || !description || !image || !category) {
       res.status(400).json({
         status: 400,
         message: "Please fill in all fields",
@@ -79,7 +79,8 @@ const insertBlog = async (req, res) => {
     const newBlog = new Blog({
       title,
       description,
-      image,
+      image: req.file.path,
+      category,
     });
 
     const response = await newBlog.save();
@@ -99,7 +100,7 @@ const insertBlog = async (req, res) => {
 
 //!Update
 const updateBlog = async (req, res) => {
-  const { title, description, image } = req.body;
+  const { title, description, category } = req.body;
   const { id } = req.params;
 
   if (!mongoose.Types.ObjectId.isValid(id)) {
@@ -111,7 +112,7 @@ const updateBlog = async (req, res) => {
   try {
     const blog = await Blog.findByIdAndUpdate(
       id,
-      { title, description, image },
+      { title, description, image: req.file.path, category },
       { new: true }
     );
 

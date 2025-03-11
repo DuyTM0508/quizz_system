@@ -2,7 +2,9 @@ const express = require("express");
 const cors = require("cors");
 const cookieSession = require("cookie-session");
 const blogRouter = require("./app/routes/blog/blog.routes");
-
+const dbConnection = require("./app/config/dbConnection");
+require("dotenv").config();
+dbConnection();
 const dbConfig = require("./app/config/db.config");
 
 const app = express();
@@ -33,19 +35,19 @@ app.use(
 const db = require("./app/models");
 const Role = db.role;
 
-db.mongoose
-  .connect(`mongodb://${dbConfig.HOST}:${dbConfig.PORT}/${dbConfig.DB}`, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .then(() => {
-    console.log("Successfully connect to MongoDB.");
-    initial();
-  })
-  .catch((err) => {
-    console.error("Connection error", err);
-    process.exit();
-  });
+// db.mongoose
+//   .connect(`mongodb://${dbConfig.HOST}:${dbConfig.PORT}/${dbConfig.DB}`, {
+//     useNewUrlParser: true,
+//     useUnifiedTopology: true,
+//   })
+//   .then(() => {
+//     console.log("Successfully connect to MongoDB.");
+//     initial();
+//   })
+//   .catch((err) => {
+//     console.error("Connection error", err);
+//     process.exit();
+//   });
 
 // simple route
 app.get("/", (req, res) => {
