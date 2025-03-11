@@ -38,9 +38,12 @@ const BlogPage = () => {
           <div className="featured-content">
             <div className="post-meta"></div>
             <h2 className="featured-title">{dataBlog?.data?.[0].title}</h2>
-            <p className="featured-description">
-              {dataBlog?.data?.[0].description}
-            </p>
+            <p
+              className="featured-description"
+              dangerouslySetInnerHTML={{
+                __html: dataBlog?.data?.[0].description,
+              }}
+            ></p>
             <button
               className="read-more-btn"
               onClick={() => handleReadMore(dataBlog?.data?.[0].id)}
@@ -53,28 +56,35 @@ const BlogPage = () => {
       </section>
 
       <section className="blog-posts-grid">
-        {dataBlog?.data?.map((post) => (
-          <article key={post?.id} className="blog-card">
-            <div className="image-container">
-              <img
-                src={post?.image || "/placeholder.svg"}
-                alt={post?.title}
-                className="post-image"
-              />
-            </div>
-            <div className="post-content">
-              <h3 className="post-title">{post?.title}</h3>
-              <p className="post-description">{post.description}</p>
-              <button
-                className="read-more-link"
-                onClick={() => handleReadMore(post?.id)}
-              >
-                Read more
-                <span className="arrow-icon">→</span>
-              </button>
-            </div>
-          </article>
-        ))}
+        {dataBlog?.data
+          ?.filter((item) => item?.id !== dataBlog?.data?.[0]?.id)
+          .map((post) => (
+            <article key={post?.id} className="blog-card">
+              <div className="image-container">
+                <img
+                  src={post?.image || "/placeholder.svg"}
+                  alt={post?.title}
+                  className="post-image"
+                />
+              </div>
+              <div className="post-content">
+                <h3 className="post-title">{post?.title}</h3>
+                <p
+                  className="post-description"
+                  dangerouslySetInnerHTML={{
+                    __html: post?.description,
+                  }}
+                ></p>
+                <button
+                  className="read-more-link"
+                  onClick={() => handleReadMore(post?.id)}
+                >
+                  Read more
+                  <span className="arrow-icon">→</span>
+                </button>
+              </div>
+            </article>
+          ))}
       </section>
 
       {/* <div className="pagination">

@@ -110,75 +110,16 @@ const BlogDetail = () => {
           </div>
 
           <div className="article-content">
-            {dataDetailBlog?.data?.content ? (
+            {dataDetailBlog?.data?.description && (
               <div
                 dangerouslySetInnerHTML={{
-                  __html: dataDetailBlog.data.content,
+                  __html: dataDetailBlog?.data?.description,
                 }}
               />
-            ) : (
-              <>
-                <p className="article-paragraph">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
-                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                  Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                  laboris nisi ut aliquip ex ea commodo consequat.
-                </p>
-                <p className="article-paragraph">
-                  Duis aute irure dolor in reprehenderit in voluptate velit esse
-                  cillum dolore eu fugiat nulla pariatur. Excepteur sint
-                  occaecat cupidatat non proident, sunt in culpa qui officia
-                  deserunt mollit anim id est laborum.
-                </p>
-                <h2 className="article-subheading">Key Takeaways</h2>
-                <p className="article-paragraph">
-                  Sed ut perspiciatis unde omnis iste natus error sit voluptatem
-                  accusantium doloremque laudantium, totam rem aperiam, eaque
-                  ipsa quae ab illo inventore veritatis et quasi architecto
-                  beatae vitae dicta sunt explicabo.
-                </p>
-                <blockquote className="article-quote">
-                  "Design is not just what it looks like and feels like. Design
-                  is how it works." - Steve Jobs
-                </blockquote>
-                <p className="article-paragraph">
-                  Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut
-                  odit aut fugit, sed quia consequuntur magni dolores eos qui
-                  ratione voluptatem sequi nesciunt.
-                </p>
-              </>
             )}
           </div>
         </div>
       </article>
-
-      <section className="related-posts">
-        <h2 className="related-posts-title">You might also like</h2>
-        <div className="related-posts-grid">
-          {[1, 2, 3].map((item) => (
-            <div key={item} className="related-post-card">
-              <div className="related-image-container">
-                <img
-                  src={`/placeholder.svg?height=200&width=300`}
-                  alt="Related post"
-                  className="related-post-image"
-                />
-              </div>
-              <h3 className="related-post-title">
-                Related Article Title {item}
-              </h3>
-              <p className="related-post-excerpt">
-                A brief excerpt from the related article to give readers a
-                preview...
-              </p>
-              <button className="read-more-link">
-                Read more
-                <span className="arrow-icon">→</span>
-              </button>
-            </div>
-          ))}
-        </div>
-      </section>
     </div>
   );
 };
