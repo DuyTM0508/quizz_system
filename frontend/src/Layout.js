@@ -14,6 +14,8 @@ import Flashcards from "./pages/Flashcards";
 import FlashCardDetail from "./components/FlashCards/FlashCardDetail";
 import BlogPage from "./pages/blog/BlogPage";
 import BlogDetail from "./pages/blog/BlogDetail";
+import AdminBlog from "./pages/admin/blog";
+import AddNewBlog from "./pages/admin/blog/components/AddNewBlog";
 const Layout = () => {
   return (
     <>
@@ -33,6 +35,8 @@ const Layout = () => {
         <Route path="/admin" element={<Admin />}>
           <Route path="user-manager" element={<ManagerUser />}></Route>
           <Route index element={<Dashboard />}></Route>
+          <Route path="admin-blog" element={<AdminBlog />}></Route>
+          <Route path="admin-blog/addNewBlog" element={<AddNewBlog />}></Route>
         </Route>
 
         <Route path="/login" element={<Login />}></Route>
