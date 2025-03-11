@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import ReactQuill from "react-quill";
@@ -16,6 +16,7 @@ const AddNewBlog = () => {
   const navigate = useNavigate();
   const params = useParams();
   const { id } = params;
+  const [file, setFile] = useState();
 
   const { data: dataDetail } = useGetDetailBlog(id, {
     isTrigger: !!id,
@@ -30,6 +31,7 @@ const AddNewBlog = () => {
     "Business",
     "Education",
     "Entertainment",
+    "Study",
   ];
 
   const formik = useFormik({
@@ -39,6 +41,7 @@ const AddNewBlog = () => {
       image: dataDetail?.image || "",
       category: dataDetail?.category || "",
     },
+    enableReinitialize: true,
     validationSchema: Yup.object({
       title: Yup.string()
         .required("Title is required")
@@ -50,25 +53,38 @@ const AddNewBlog = () => {
     onSubmit: async (values) => {
       const formData = new FormData();
       setIsSubmitting(true);
+
       try {
         formData.append("title", values.title);
         formData.append("description", values.description);
-        formData.append(
-          "image",
-          document.getElementById("image-upload").files[0]
-        );
         formData.append("category", values.category);
 
+        // Nếu có ảnh mới thì dùng ảnh mới, nếu không thì tải ảnh cũ dưới dạng binary
+        if (file) {
+          formData.append("image", file); // Ảnh mới chọn
+        } else if (values.image && typeof values.image === "string") {
+          const response = await fetch(values.image);
+          const blob = await response.blob();
+          const fileName = values.image.split("/").pop(); // Lấy tên file từ URL
+          const fileType = blob.type; // Loại file từ blob
+          formData.append(
+            "image",
+            new File([blob], fileName, { type: fileType })
+          );
+        }
+
         if (id) {
-          const response = await blogService.putUpdateBlog(id, formData);
-          toast.success(response.message);
+          await blogService.putUpdateBlog(id, formData);
+          toast.success("Blog updated successfully");
           navigate(-1);
           return;
         }
-        const response = await blogService.postCreateBlog(formData);
-        toast.success(response.message);
+
+        await blogService.postCreateBlog(formData);
+        toast.success("Blog created successfully");
         formik.resetForm();
         setImagePreview(null);
+        setFile(null);
         navigate(-1);
       } catch (error) {
         toast.error(error.message);
@@ -78,15 +94,22 @@ const AddNewBlog = () => {
     },
   });
 
-  const handleImageChange = (e) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      formik.setFieldValue("image", file.name);
-      const reader = new FileReader();
-      reader.onload = () => setImagePreview(reader.result);
-      reader.readAsDataURL(file);
+  useEffect(() => {
+    if (dataDetail) {
+      formik.setValues({
+        title: dataDetail?.data?.title || "",
+        description: dataDetail?.data?.description || "",
+        image: dataDetail?.data?.image || "",
+        category: dataDetail?.data?.category || "",
+      });
     }
-  };
+  }, [dataDetail]);
+
+  useEffect(() => {
+    if (dataDetail?.data?.image) {
+      setImagePreview(dataDetail.data.image);
+    }
+  }, [dataDetail]);
 
   return (
     <div className="container py-5">
@@ -189,7 +212,14 @@ const AddNewBlog = () => {
                       type="file"
                       accept="image/*"
                       className="d-none"
-                      onChange={handleImageChange}
+                      onChange={(e) => {
+                        const selectedFile = e.target.files?.[0];
+                        if (selectedFile) {
+                          setImagePreview(URL.createObjectURL(selectedFile));
+                          setFile(selectedFile);
+                          formik.setFieldValue("image", selectedFile); // Luôn giữ giá trị file
+                        }
+                      }}
                     />
                   </div>
                   {formik.touched.image && formik.errors.image && (
@@ -228,6 +258,10 @@ const AddNewBlog = () => {
                 type="button"
                 className="btn btn-outline-secondary btn-lg"
                 onClick={() => {
+                  if (id) {
+                    navigate(-1);
+                    return;
+                  }
                   formik.resetForm();
                   setImagePreview(null);
                 }}

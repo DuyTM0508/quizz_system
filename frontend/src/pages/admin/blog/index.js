@@ -45,9 +45,9 @@ const AdminBlog = () => {
 
   const handleDeleteConfirm = async () => {
     try {
-      const response = await blogService.deleteBlog(blogToDelete.id);
+      await blogService.deleteBlog(blogToDelete.id);
       refetch();
-      toast.success(response.message);
+      toast.success("Blog deleted successfully");
       setShowDeleteModal(false);
       setBlogToDelete(null);
     } catch (error) {
@@ -177,7 +177,14 @@ const AdminBlog = () => {
                               >
                                 <Eye className="h-5 w-5" />
                               </button>
-                              <button className="text-green-500 hover:text-green-700 p-1 rounded-full hover:bg-green-100 transition duration-300">
+                              <button
+                                className="text-green-500 hover:text-green-700 p-1 rounded-full hover:bg-green-100 transition duration-300"
+                                onClick={() =>
+                                  navigate(
+                                    `/admin/admin-blog/addNewBlog/${blog.id}`
+                                  )
+                                }
+                              >
                                 <Edit className="h-5 w-5" />
                               </button>
                               <button

@@ -37,6 +37,10 @@ const Layout = () => {
           <Route index element={<Dashboard />}></Route>
           <Route path="admin-blog" element={<AdminBlog />}></Route>
           <Route path="admin-blog/addNewBlog" element={<AddNewBlog />}></Route>
+          <Route
+            path="admin-blog/addNewBlog/:id"
+            element={<AddNewBlog />}
+          ></Route>
         </Route>
 
         <Route path="/login" element={<Login />}></Route>
