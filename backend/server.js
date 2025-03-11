@@ -1,9 +1,9 @@
+require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const cookieSession = require("cookie-session");
 const blogRouter = require("./app/routes/blog/blog.routes");
 const dbConnection = require("./app/config/dbConnection");
-require("dotenv").config();
 dbConnection();
 const dbConfig = require("./app/config/db.config");
 

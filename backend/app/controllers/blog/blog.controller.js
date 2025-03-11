@@ -67,9 +67,9 @@ const getBlogDetail = async (req, res) => {
 
 //!Insert
 const insertBlog = async (req, res) => {
-  const { title, description, image, category } = req.body;
+  const { title, description, category } = req.body;
   try {
-    if (!title || !description || !image || !category) {
+    if (!title || !description || !category) {
       res.status(400).json({
         status: 400,
         message: "Please fill in all fields",

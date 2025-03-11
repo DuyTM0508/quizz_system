@@ -17,11 +17,15 @@ const useGetListBlog = () => {
     }
   };
 
+  const refetch = async () => {
+    await fetchData();
+  };
+
   useEffect(() => {
     fetchData();
   }, []);
 
-  return { data, loading };
+  return { data, loading, refetch };
 };
 
 export default useGetListBlog;
