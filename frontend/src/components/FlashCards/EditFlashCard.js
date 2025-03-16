@@ -1,43 +1,38 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import { getFlashcardById, updateFlashcard, getFlashcards } from "../../api/flashcardApi";
-import FlashCardForm from "./FlashCardForm";
+import FlashCardForm from "../../components/FlashCards/FlashCardForm";
+import { useNavigate, useParams } from "react-router-dom";
+import { getFlashcardById, updateFlashcard } from "../../api/flashcardApi";
 
-const EditFlashcard = ({ setFlashcards }) => {
-    const { id } = useParams(); // Lấy ID từ URL
+const EditFlashcard = () => {
+    const { id } = useParams();
     const navigate = useNavigate();
     const [flashcard, setFlashcard] = useState(null);
 
     useEffect(() => {
-        const fetchData = async () => {
+        const fetchFlashcard = async () => {
             try {
                 const data = await getFlashcardById(id);
                 setFlashcard(data);
             } catch (error) {
-                console.error("Error fetching flashcard:", error);
+                console.error("Failed to fetch flashcard", error);
             }
         };
-        fetchData();
+        fetchFlashcard();
     }, [id]);
 
-    const handleSave = async (updatedCard) => {
-        await updateFlashcard(id, updatedCard);
-
-        // Lấy lại danh sách flashcards từ server sau khi cập nhật
-        const updatedFlashcards = await getFlashcards();
-        setFlashcards(updatedFlashcards);
-
-        navigate("/flashcards"); // Quay về danh sách flashcards
+    const handleUpdateFlashcard = async (updatedFlashcard) => {
+        try {
+            await updateFlashcard(id, updatedFlashcard);
+            navigate("/admin/flashcards");
+        } catch (error) {
+            console.error("Failed to update flashcard", error);
+        }
     };
 
     return (
         <div>
-            <h2>Edit Flashcard</h2>
-            {flashcard ? (
-                <FlashCardForm onSubmit={handleSave} editingCard={flashcard} />
-            ) : (
-                <p>Loading...</p>
-            )}
+            <h1 className="text-3xl font-bold mb-4">Edit Flashcard</h1>
+            {flashcard ? <FlashCardForm onSubmit={handleUpdateFlashcard} editingCard={flashcard} /> : <p>Loading...</p>}
         </div>
     );
 };

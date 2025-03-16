@@ -11,11 +11,13 @@ import App from "./App";
 import { ToastContainer } from "react-toastify";
 import Register from "./components/Auth/Register";
 import Flashcards from "./pages/Flashcards";
-import FlashCardDetail from "./components/FlashCards/FlashCardDetail";
 import BlogPage from "./pages/blog/BlogPage";
 import BlogDetail from "./pages/blog/BlogDetail";
 import AdminBlog from "./pages/admin/blog";
 import AddNewBlog from "./pages/admin/blog/components/AddNewBlog";
+import AdminFlashcard from "./components/Admin/flashcard/AdminFlashcard";
+import EditFlashcard from "./components/FlashCards/EditFlashCard";
+import AddFlashcard from "./components/FlashCards/AddFlashcard";
 const Layout = () => {
   return (
     <>
@@ -24,13 +26,8 @@ const Layout = () => {
           <Route path="/user" element={<User />}></Route>
           <Route index element={<Homepage />}></Route>
           <Route path="/flashcards/*" element={<Flashcards />} />
-          <Route
-            path="/flashcards/view/:id"
-            element={<FlashCardDetail />}
-          />{" "}
           <Route path="/blog" element={<BlogPage />} />{" "}
           <Route path="/blog/:id" element={<BlogDetail />} />{" "}
-          {/* <Route path="/flashcards/create" element={<CreateFlashcard />} />{" "} */}
         </Route>
         <Route path="/admin" element={<Admin />}>
           <Route path="user-manager" element={<ManagerUser />}></Route>
@@ -41,6 +38,9 @@ const Layout = () => {
             path="admin-blog/addNewBlog/:id"
             element={<AddNewBlog />}
           ></Route>
+          <Route path="flashcards" element={<AdminFlashcard />} />
+          <Route path="flashcard/add" element={<AddFlashcard />} />  
+          <Route path="flashcard/edit/:id" element={<EditFlashcard />} />
         </Route>
 
         <Route path="/login" element={<Login />}></Route>

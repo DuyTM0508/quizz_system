@@ -69,6 +69,10 @@ const SideBar = ({ image, collapsed, toggled, handleToggleSidebar }) => {
               <MenuItem>
                 Quản lý blog <Link to={"/admin/admin-blog"} />
               </MenuItem>
+              <MenuItem>
+                Quản lý Flashcard
+                <Link to="/admin/flashcards" />
+              </MenuItem>
             </SubMenu>
           </Menu>
         </SidebarContent>

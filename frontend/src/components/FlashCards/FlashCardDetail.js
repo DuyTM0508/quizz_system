@@ -7,7 +7,7 @@ const FlashCardDetail = () => {
     const navigate = useNavigate();
     const [flashcard, setFlashcard] = useState(null);
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-    const [showAnswer, setShowAnswer] = useState(false);
+    const [showCorrectAnswers, setShowCorrectAnswers] = useState(false);
 
     useEffect(() => {
         const fetchFlashcard = async () => {
@@ -25,7 +25,7 @@ const FlashCardDetail = () => {
         const handleKeyDown = (e) => {
             if (e.code === "Space") {
                 e.preventDefault();
-                setShowAnswer((prev) => !prev);
+                setShowCorrectAnswers((prev) => !prev); // Chuyển đổi giữa hiển thị đáp án đúng
             } else if (e.code === "ArrowRight") {
                 nextQuestion();
             } else if (e.code === "ArrowLeft") {
@@ -40,51 +40,50 @@ const FlashCardDetail = () => {
     const nextQuestion = () => {
         if (currentQuestionIndex < flashcard.questions.length - 1) {
             setCurrentQuestionIndex((prev) => prev + 1);
-            setShowAnswer(false);
+            setShowCorrectAnswers(false); // Đặt lại hiển thị đáp án đúng
         } else {
-            alert("You've reached the end!");
+            alert("Bạn đã đến câu hỏi cuối!");
         }
     };
 
     const previousQuestion = () => {
         if (currentQuestionIndex > 0) {
             setCurrentQuestionIndex((prev) => prev - 1);
-            setShowAnswer(false);
+            setShowCorrectAnswers(false); // Đặt lại hiển thị đáp án đúng
         } else {
-            alert("This is the first question!");
+            alert("Đây là câu hỏi đầu tiên!");
         }
     };
 
     if (!flashcard) return <p>Loading...</p>;
+    if (!flashcard.questions || flashcard.questions.length === 0) {
+        return <p>Flashcard này không có câu hỏi nào.</p>;
+    }
 
     const currentQuestion = flashcard.questions[currentQuestionIndex];
 
     return (
-        <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 p-4">
-            <h2 className="text-2xl font-bold mb-4">{flashcard.title}</h2>
+        <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 p-6">
+            <h2 className="text-3xl font-bold mb-6">{flashcard.title}</h2>
 
             <div
-                className="w-full max-w-md p-8 bg-white rounded-2xl shadow-lg text-center cursor-pointer"
-                onClick={() => setShowAnswer(!showAnswer)}
+                className="w-full max-w-md p-8 bg-white rounded-2xl shadow-lg text-center cursor-pointer hover:bg-gray-50 transition"
+                onClick={() => setShowCorrectAnswers((prev) => !prev)} // Nhấp vào để hiện đáp án đúng
             >
-                <h3 className="text-lg font-semibold mb-2">
+                <h3 className="text-xl font-semibold mb-2">
                     Question {currentQuestionIndex + 1} of {flashcard.questions.length}
                 </h3>
 
-                {!showAnswer ? (
-                    <p className="text-xl">{currentQuestion.content}</p>
-                ) : (
-                    <div>
-                        <h4 className="text-lg font-medium mb-2">Answers:</h4>
-                        <ul className="text-left">
-                            {currentQuestion.answers.map((answer, index) => (
-                                <li key={index} className={answer.isCorrect ? "text-green-600" : ""}>
-                                    {answer.content} {answer.isCorrect ? "✅" : ""}
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
-                )}
+                <p className="text-lg mb-4">{currentQuestion.content}?</p>
+
+                <h4 className="text-lg font-medium mb-2"></h4>
+                <ul className="text-left">
+                    {currentQuestion.answers.map((answer, index) => (
+                        <li key={index} className={`flex justify-between ${showCorrectAnswers ? (answer.isCorrect ? "text-green-600" : "text-red-600") : ""}`}>
+                            {answer.content} {showCorrectAnswers && answer.isCorrect ? "✅" : ""}
+                        </li>
+                    ))}
+                </ul>
             </div>
 
             <div className="flex mt-6 gap-4">
