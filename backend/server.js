@@ -3,7 +3,8 @@ const express = require("express");
 const cors = require("cors");
 const cookieSession = require("cookie-session");
 const blogRouter = require("./app/routes/blog/blog.routes");
-const flashcardRouter = require("./app/routes/flashcardRoutes")
+const flashcardRouter = require("./app/routes/flashcardRoutes");
+const questionRouter = require("./app/routes/questionRoutes");
 const dbConnection = require("./app/config/dbConnection");
 dbConnection();
 const dbConfig = require("./app/config/db.config");
@@ -57,6 +58,7 @@ app.get("/", (req, res) => {
 
 app.use("/blogs", blogRouter);
 app.use("/flashcards", flashcardRouter);
+app.use("/questions", questionRouter);
 // routes
 require("./app/routes/auth.routes")(app);
 require("./app/routes/user.routes")(app);
