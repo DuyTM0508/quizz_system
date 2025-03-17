@@ -5,11 +5,14 @@
   "dependencies": {
     "@fortawesome/free-solid-svg-icons": "^6.7.2",
     "@fortawesome/react-fontawesome": "^0.2.2",
-    "axios": "0.27.2",
+    "axios": "^0.27.2",
     "bootstrap": "5.3.3",
     "cra-template": "1.2.0",
     "font-awesome": "^4.7.0",
+    "formik": "^2.4.6",
+    "framer-motion": "^12.4.7",
     "lodash": "4.17.21",
+    "lucide-react": "^0.477.0",
     "nprogress": "^0.2.0",
     "react": "^18.3.1",
     "react-bootstrap": "2.10.7",
@@ -17,14 +20,15 @@
     "react-icons": "4.4.0",
     "react-paginate": "^8.2.0",
     "react-pro-sidebar": "0.7.1",
+    "react-quill": "^2.0.0",
     "react-redux": "^9.2.0",
-    "react-router-dom": "^7.1.1",
+    "react-router-dom": "^7.2.0",
     "react-scripts": "5.0.1",
-    "react-toastify": "^11.0.2",
+    "react-toastify": "^11.0.5",
     "redux": "^5.0.1",
     "redux-persist": "^6.0.0",
     "redux-thunk": "^3.1.0",
-    "sass": "^1.83.1"
+    "yup": "^1.6.1"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -51,6 +55,12 @@
     ]
   },
   "devDependencies": {
+    "@tailwindcss/postcss": "^4.0.12",
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.4.33",
+    "sass": "^1.85.1",
+    "sass-loader": "^16.0.5",
+    "tailwindcss": "^3.4.1",
     "web-vitals": "^4.2.4"
   }
 }
