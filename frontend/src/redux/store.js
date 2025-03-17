@@ -19,4 +19,9 @@ const store = createStore(
 );
 
 let persistor = persistStore(store);
+
+// persistor.subscribe(() => {
+//   console.log("Redux Persist Updated State:", store.getState());
+// });
+
 export { store, persistor };
