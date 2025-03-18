@@ -18,6 +18,8 @@ import AddNewBlog from "./pages/admin/blog/components/AddNewBlog";
 import AdminFlashcard from "./components/Admin/flashcard/AdminFlashcard";
 import EditFlashcard from "./components/FlashCards/EditFlashCard";
 import AddFlashcard from "./components/FlashCards/AddFlashcard";
+import FlashCardDetail from "./components/FlashCards/FlashCardDetail";
+import ProtectedRoute from "./pages/ProtectedRoute";
 const Layout = () => {
   return (
     <>
@@ -28,9 +30,12 @@ const Layout = () => {
           <Route path="/flashcards/*" element={<Flashcards />} />
           <Route path="/blog" element={<BlogPage />} />{" "}
           <Route path="/blog/:id" element={<BlogDetail />} />{" "}
+          <Route path="/flashcards/view/:id" element={<FlashCardDetail />} />{" "}
+          {/* <Route path="/flashcards/create" element={<CreateFlashcard />} />{" "} */}
         </Route>
         <Route path="/admin" element={<Admin />}>
           <Route path="user-manager" element={<ManagerUser />}></Route>
+
           <Route index element={<Dashboard />}></Route>
           <Route path="admin-blog" element={<AdminBlog />}></Route>
           <Route path="admin-blog/addNewBlog" element={<AddNewBlog />}></Route>
@@ -39,12 +44,26 @@ const Layout = () => {
             element={<AddNewBlog />}
           ></Route>
           <Route path="flashcards" element={<AdminFlashcard />} />
-          <Route path="flashcard/add" element={<AddFlashcard />} />  
+          <Route path="flashcard/add" element={<AddFlashcard />} />
           <Route path="flashcard/edit/:id" element={<EditFlashcard />} />
         </Route>
 
-        <Route path="/login" element={<Login />}></Route>
-        <Route path="/register" element={<Register />}></Route>
+        <Route
+          path="/login"
+          element={
+            <ProtectedRoute>
+              <Login />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/register"
+          element={
+            <ProtectedRoute>
+              <Register />
+            </ProtectedRoute>
+          }
+        ></Route>
       </Routes>
       <ToastContainer
         position="top-right"

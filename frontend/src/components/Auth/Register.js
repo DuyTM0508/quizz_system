@@ -9,6 +9,7 @@ const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [userName, setUserName] = useState("");
+  const [role, setRole] = useState("user");
 
   const [isShowPassword, setIsShowPassword] = useState(false);
 
@@ -16,7 +17,7 @@ const Register = () => {
 
   const navigate = useNavigate();
   const handleRegister = async () => {
-    const data = await postRegister(email, userName, password);
+    const data = await postRegister(email, userName, password, role);
     if (data && data.EC === 0) {
       toast.success(data.EM);
       navigate("/login");

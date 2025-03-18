@@ -6,9 +6,10 @@ import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
 import { doLogin } from "../../redux/action/userAction";
 import { ImSpinner10 } from "react-icons/im";
+import { useEffect } from "react";
 
 const Login = () => {
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
@@ -16,7 +17,7 @@ const Login = () => {
   const dispatch = useDispatch();
   const handleLogin = async () => {
     setIsLoading(true);
-    const data = await postLogin(email, password);
+    const data = await postLogin(username, password);
     if (data && data.EC === 0) {
       dispatch(doLogin(data));
       toast.success(data.EM);
@@ -29,6 +30,13 @@ const Login = () => {
       setIsLoading(false);
     }
   };
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      navigate("/admin"); // Nếu đã đăng nhập, chuyển hướng
+    }
+  }, []);
   return (
     <div className="login-container">
       <div className="header">
@@ -39,12 +47,12 @@ const Login = () => {
       <div className="welcome col-4 mx-auto">Hello, Who's this?</div>
       <div className="content-form col-4 mx-auto">
         <div className="form-group ">
-          <label>Email</label>
+          <label>Username</label>
           <input
-            value={email}
+            value={username}
             type="email"
             className="form-control"
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e) => setUsername(e.target.value)}
           />
         </div>
         <div className="form-group">
