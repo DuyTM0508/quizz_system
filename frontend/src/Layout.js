@@ -18,6 +18,7 @@ import AddNewBlog from "./pages/admin/blog/components/AddNewBlog";
 import AdminFlashcard from "./components/Admin/flashcard/AdminFlashcard";
 import EditFlashcard from "./components/FlashCards/EditFlashCard";
 import AddFlashcard from "./components/FlashCards/AddFlashcard";
+import ProtectedRoute from "./pages/ProtectedRoute";
 const Layout = () => {
   return (
     <>
@@ -39,12 +40,26 @@ const Layout = () => {
             element={<AddNewBlog />}
           ></Route>
           <Route path="flashcards" element={<AdminFlashcard />} />
-          <Route path="flashcard/add" element={<AddFlashcard />} />  
+          <Route path="flashcard/add" element={<AddFlashcard />} />
           <Route path="flashcard/edit/:id" element={<EditFlashcard />} />
         </Route>
 
-        <Route path="/login" element={<Login />}></Route>
-        <Route path="/register" element={<Register />}></Route>
+        <Route
+          path="/login"
+          element={
+            <ProtectedRoute>
+              <Login />
+            </ProtectedRoute>
+          }
+        ></Route>
+        <Route
+          path="/register"
+          element={
+            <ProtectedRoute>
+              <Register />
+            </ProtectedRoute>
+          }
+        ></Route>
       </Routes>
       <ToastContainer
         position="top-right"
