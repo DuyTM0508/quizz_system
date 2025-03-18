@@ -18,7 +18,7 @@ const ManagerUser = () => {
   const [dataUpdate, setDataUpdate] = useState({});
   const [dataDelete, setdataDelete] = useState({});
 
-  const [pageCount, setPageCount] = useState(0);
+  const [pageCount, setPageCount] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
   useEffect(() => {
     // fetchUserData();
@@ -32,7 +32,7 @@ const ManagerUser = () => {
 
   const fetchUserDataWithPaginate = async (page) => {
     let res = await getUserWithPaginate(page, LIMIT_USER);
-    console.log(res.DT);
+    console.log("data is ahihi", res);
     setListUser(res.DT.users);
     setPageCount(res.DT.totalPages);
   };
@@ -55,6 +55,8 @@ const ManagerUser = () => {
     setshowDeleteUser(true);
     setdataDelete(user);
   };
+
+  // console.log("check pagecount --------------------->", pageCount);
   return (
     <div className="manager-user-container">
       <div className="title">Manager User</div>

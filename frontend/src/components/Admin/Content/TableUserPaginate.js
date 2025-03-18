@@ -40,11 +40,11 @@ const TableUserPaginate = (props) => {
               .reverse()
               .map((user) => {
                 return (
-                  <tr key={`table-users-${user.id}`}>
-                    <th>{user.id}</th>
+                  <tr key={user?._id || `table-users-${user._id}`}>
+                    <th>{user._id}</th>
                     <td>{user.username}</td>
                     <td>{user.email}</td>
-                    <td>{user.role}</td>
+                    <td>{user.role ? "Admin" : "User"}</td>
                     <td>
                       <button
                         onClick={() => handleClickBtnView(user)}

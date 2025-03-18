@@ -18,7 +18,7 @@ const ModalCreateUser = (props) => {
     setShow(false);
     setEmail("");
     setPassword("");
-    setRole("");
+    setRole("false");
     setUsername("");
     setImage("");
     setImagePreview("");
@@ -26,7 +26,7 @@ const ModalCreateUser = (props) => {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [role, setRole] = useState("USER");
+  const [role, setRole] = useState("false");
   const [username, setUsername] = useState("");
   const [image, setImage] = useState("");
   const [imagePreview, setImagePreview] = useState("");
@@ -59,7 +59,7 @@ const ModalCreateUser = (props) => {
       return;
     }
 
-    let data = await postCreatedNewUser(email, password, username, role, image);
+    let data = await postCreatedNewUser(email, password, username, role);
     console.log("component: >>>>>", data);
     if (data && data.EC === 0) {
       toast.success(data.EM);
@@ -128,8 +128,8 @@ const ModalCreateUser = (props) => {
                 onChange={(e) => setRole(e.target.value)}
                 value={role}
               >
-                <option value="USER">USER</option>
-                <option value="ADMIN">ADMIN</option>
+                <option value="false">USER</option>
+                <option value="true">ADMIN</option>
               </select>
             </div>
             <div className="col-12">

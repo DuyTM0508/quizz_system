@@ -2,105 +2,80 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const cookieSession = require("cookie-session");
+const cookieParser = require("cookie-parser");
+const mongoose = require("mongoose");
+
+const authRouter = require("./app/routes/auth");
+const userRouter = require("./app/routes/userRouter");
 const blogRouter = require("./app/routes/blog/blog.routes");
 const flashcardRouter = require("./app/routes/flashcardRoutes");
-const questionRouter = require("./app/routes/questionRoutes");
-const dbConnection = require("./app/config/dbConnection");
-dbConnection();
+// const questionRouter = require("./app/routes/questionRoutes");
 const dbConfig = require("./app/config/db.config");
 
 const app = express();
 
+// Middleware
 app.use(cors());
-/* for Angular Client (withCredentials) */
-// app.use(
-//   cors({
-//     credentials: true,
-//     origin: ["http://localhost:8081"],
-//   })
-// );
-
-// parse requests of content-type - application/json
+app.use(cookieParser());
 app.use(express.json());
-
-// parse requests of content-type - application/x-www-form-urlencoded
 app.use(express.urlencoded({ extended: true }));
 
 app.use(
   cookieSession({
     name: "gianglh-session",
-    keys: ["COOKIE_SECRET"], // should use as secret environment variable
+    keys: [process.env.COOKIE_SECRET || "default_secret"], // Use environment variable
     httpOnly: true,
   })
 );
 
-const db = require("./app/models");
-const Role = db.role;
+// MongoDB Connection
+const connect_MongoDB = async () => {
+  try {
+    await mongoose.connect(
+      process.env.MONGODB_URL ||
+        `mongodb://${dbConfig.HOST}:${dbConfig.PORT}/${dbConfig.DB}`,
+      {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+      }
+    );
+    console.log("Successfully connected to MongoDB.");
+    // initial();
+  } catch (err) {
+    console.error("MongoDB connection error:", err);
+    process.exit(1);
+  }
+};
+connect_MongoDB();
 
-// db.mongoose
-//   .connect(`mongodb://${dbConfig.HOST}:${dbConfig.PORT}/${dbConfig.DB}`, {
-//     useNewUrlParser: true,
-//     useUnifiedTopology: true,
-//   })
-//   .then(() => {
-//     console.log("Successfully connect to MongoDB.");
-//     initial();
-//   })
-//   .catch((err) => {
-//     console.error("Connection error", err);
-//     process.exit();
-//   });
-
-// simple route
+// Routes
 app.get("/", (req, res) => {
   res.json({ message: "Welcome to gianglh application." });
 });
-
+app.use("/v1/auth", authRouter);
+app.use("/v1/user", userRouter);
 app.use("/blogs", blogRouter);
 app.use("/flashcards", flashcardRouter);
-app.use("/questions", questionRouter);
-// routes
-require("./app/routes/auth.routes")(app);
-require("./app/routes/user.routes")(app);
+// app.use("/questions", questionRouter);
 
-// set port, listen for requests
-const PORT = process.env.PORT || 8080;
+// Initialize roles in DB
+// const db = require("./app/models");
+// const Role = db.role;
+// function initial() {
+//   Role.estimatedDocumentCount((err, count) => {
+//     if (!err && count === 0) {
+//       ["user", "moderator", "admin"].forEach((role) => {
+//         new Role({ name: role }).save((err) => {
+//           if (err) console.log("error", err);
+//           else console.log(`added '${role}' to roles collection`);
+//         });
+//       });
+//     }
+//   });
+// }
+
+// Start server
+const PORT = process.env.PORT || 9998;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);
 });
-
-function initial() {
-  Role.estimatedDocumentCount((err, count) => {
-    if (!err && count === 0) {
-      new Role({
-        name: "user",
-      }).save((err) => {
-        if (err) {
-          console.log("error", err);
-        }
-
-        console.log("added 'user' to roles collection");
-      });
-
-      new Role({
-        name: "moderator",
-      }).save((err) => {
-        if (err) {
-          console.log("error", err);
-        }
-
-        console.log("added 'moderator' to roles collection");
-      });
-
-      new Role({
-        name: "admin",
-      }).save((err) => {
-        if (err) {
-          console.log("error", err);
-        }
-
-        console.log("added 'admin' to roles collection");
-      });
-    }
-  });
-}
