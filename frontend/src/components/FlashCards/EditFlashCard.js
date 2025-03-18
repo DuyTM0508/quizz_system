@@ -1,38 +1,43 @@
 import React, { useEffect, useState } from "react";
-import FlashCardForm from "../../components/FlashCards/FlashCardForm";
-import { useNavigate, useParams } from "react-router-dom";
-import { getFlashcardById, updateFlashcard } from "../../api/flashcardApi";
+import { useParams, useNavigate } from "react-router-dom";
+import { getFlashcardById, updateFlashcard, getFlashcards } from "../../api/flashcardApi";
+import FlashCardForm from "./FlashCardForm";
 
-const EditFlashcard = () => {
-    const { id } = useParams();
+const EditFlashcard = ({ setFlashcards }) => {
+    const { id } = useParams(); // Lấy ID từ URL
     const navigate = useNavigate();
     const [flashcard, setFlashcard] = useState(null);
 
     useEffect(() => {
-        const fetchFlashcard = async () => {
+        const fetchData = async () => {
             try {
                 const data = await getFlashcardById(id);
                 setFlashcard(data);
             } catch (error) {
-                console.error("Failed to fetch flashcard", error);
+                console.error("Error fetching flashcard:", error);
             }
         };
-        fetchFlashcard();
+        fetchData();
     }, [id]);
 
-    const handleUpdateFlashcard = async (updatedFlashcard) => {
-        try {
-            await updateFlashcard(id, updatedFlashcard);
-            navigate("/admin/flashcards");
-        } catch (error) {
-            console.error("Failed to update flashcard", error);
-        }
+    const handleSave = async (updatedCard) => {
+        await updateFlashcard(id, updatedCard);
+
+        // Lấy lại danh sách flashcards từ server sau khi cập nhật
+        const updatedFlashcards = await getFlashcards();
+        setFlashcards(updatedFlashcards);
+
+        navigate("/flashcards"); // Quay về danh sách flashcards
     };
 
     return (
         <div>
-            <h1 className="text-3xl font-bold mb-4">Edit Flashcard</h1>
-            {flashcard ? <FlashCardForm onSubmit={handleUpdateFlashcard} editingCard={flashcard} /> : <p>Loading...</p>}
+            <h2>Edit Flashcard</h2>
+            {flashcard ? (
+                <FlashCardForm onSubmit={handleSave} editingCard={flashcard} />
+            ) : (
+                <p>Loading...</p>
+            )}
         </div>
     );
 };
