@@ -9,7 +9,7 @@ const authRouter = require("./app/routes/auth");
 const userRouter = require("./app/routes/userRouter");
 const blogRouter = require("./app/routes/blog/blog.routes");
 const flashcardRouter = require("./app/routes/flashcardRoutes");
-const questionRouter = require("./app/routes/questionRoutes");
+// const questionRouter = require("./app/routes/questionRoutes");
 const dbConfig = require("./app/config/db.config");
 
 const app = express();
@@ -56,9 +56,7 @@ app.use("/v1/auth", authRouter);
 app.use("/v1/user", userRouter);
 app.use("/blogs", blogRouter);
 app.use("/flashcards", flashcardRouter);
-app.use("/questions", questionRouter);
-require("./app/routes/auth.routes")(app);
-require("./app/routes/user.routes")(app);
+// app.use("/questions", questionRouter);
 
 // Initialize roles in DB
 // const db = require("./app/models");
