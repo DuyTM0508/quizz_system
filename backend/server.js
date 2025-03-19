@@ -4,6 +4,7 @@ const cors = require("cors");
 const cookieSession = require("cookie-session");
 const cookieParser = require("cookie-parser");
 const mongoose = require("mongoose");
+const dbConnection = require("./app/config/dbConnection");
 
 const authRouter = require("./app/routes/auth");
 const userRouter = require("./app/routes/userRouter");
@@ -13,6 +14,7 @@ const flashcardRouter = require("./app/routes/flashcardRoutes");
 const dbConfig = require("./app/config/db.config");
 
 const app = express();
+dbConnection();
 
 // Middleware
 app.use(cors());
@@ -27,26 +29,6 @@ app.use(
     httpOnly: true,
   })
 );
-
-// MongoDB Connection
-const connect_MongoDB = async () => {
-  try {
-    await mongoose.connect(
-      process.env.MONGODB_URL ||
-        `mongodb://${dbConfig.HOST}:${dbConfig.PORT}/${dbConfig.DB}`,
-      {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-      }
-    );
-    console.log("Successfully connected to MongoDB.");
-    // initial();
-  } catch (err) {
-    console.error("MongoDB connection error:", err);
-    process.exit(1);
-  }
-};
-connect_MongoDB();
 
 // Routes
 app.get("/", (req, res) => {
