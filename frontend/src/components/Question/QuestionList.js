@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Container, Row, Col, ListGroup, Button, Form, InputGroup, Card, Pagination, ButtonGroup, Modal } from 'react-bootstrap';
 
-const API_URL = 'http://localhost:8080/questions';
+const API_URL = 'http://localhost:9999/questions';
 
 const QuestList = () => {
     const [questions, setQuestions] = useState([]);
