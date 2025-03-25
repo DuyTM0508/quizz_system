@@ -27,28 +27,23 @@ const Layout = () => {
     <>
       <Routes>
         <Route path="/" element={<App />}>
-          <Route path="/user" element={<User />}></Route>
-          <Route index element={<Homepage />}></Route>
-          <Route path="/flashcards/*" element={<Flashcards />} />
-          <Route path="/blog" element={<BlogPage />} />{" "}
-          <Route path="/blog/:id" element={<BlogDetail />} />{" "}
+          <Route path="user" element={<User />} />
+          <Route index element={<Homepage />} />
+          <Route path="flashcards/*" element={<Flashcards />} />
+          <Route path="blog" element={<BlogPage />} />
+          <Route path="blog/:id" element={<BlogDetail />} />
         </Route>
+
         <Route path="/admin" element={<Admin />}>
-          <Route path="user-manager" element={<ManagerUser />}></Route>
-          <Route index element={<Dashboard />}></Route>
-          <Route path="admin-blog" element={<AdminBlog />}></Route>
-          <Route path="admin-blog/addNewBlog" element={<AddNewBlog />}></Route>
-          <Route
-            path="admin-blog/addNewBlog/:id"
-            element={<AddNewBlog />}
-          ></Route>
+          <Route index element={<Dashboard />} />
+          <Route path="user-manager" element={<ManagerUser />} />
+          <Route path="admin-blog" element={<AdminBlog />} />
+          <Route path="admin-blog/addNewBlog" element={<AddNewBlog />} />
+          <Route path="admin-blog/addNewBlog/:id" element={<AddNewBlog />} />
           <Route path="flashcards" element={<AdminFlashcard />} />
           <Route path="flashcard/add" element={<AddFlashcard />} />
           <Route path="flashcard/edit/:id" element={<EditFlashcard />} />
-          {/* <Route path="question" element={<QuestionAdmin />} /> */}
-          <Route path="/examlist" element={<ExamList />} />
-
-
+          <Route path="examlist" element={<ExamList />} /> {/* ✅ đã sửa */}
         </Route>
 
         <Route
@@ -58,7 +53,8 @@ const Layout = () => {
               <Login />
             </ProtectedRoute>
           }
-        ></Route>
+        />
+
         <Route
           path="/register"
           element={
@@ -66,8 +62,9 @@ const Layout = () => {
               <Register />
             </ProtectedRoute>
           }
-        ></Route>
+        />
       </Routes>
+
       <ToastContainer
         position="top-right"
         autoClose={5000}

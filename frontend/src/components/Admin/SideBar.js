@@ -1,6 +1,6 @@
 import React from "react";
-import "react-pro-sidebar/dist/css/styles.css"; // Import CSS của react-pro-sidebar
-import "./Sidebar.scss"; // Import SCSS của bạn
+import "react-pro-sidebar/dist/css/styles.css";
+import "./Sidebar.scss";
 
 import {
   ProSidebar,
@@ -11,11 +11,12 @@ import {
   SidebarFooter,
   SidebarContent,
 } from "react-pro-sidebar";
-import { FaGem, FaGithub, FaReact } from "react-icons/fa";
+
+import { FaGem, FaGithub, FaReact, FaRegListAlt } from "react-icons/fa";
 import { MdDashboard } from "react-icons/md";
 import sidebarBg from "../../assests/bg2.jpg";
 import { Link } from "react-router-dom";
-// import logo from "./logo192.png";
+
 const SideBar = ({ image, collapsed, toggled, handleToggleSidebar }) => {
   return (
     <>
@@ -26,6 +27,7 @@ const SideBar = ({ image, collapsed, toggled, handleToggleSidebar }) => {
         breakPoint="md"
         onToggle={handleToggleSidebar}
       >
+        {/* Header */}
         <SidebarHeader>
           <div
             style={{
@@ -44,31 +46,42 @@ const SideBar = ({ image, collapsed, toggled, handleToggleSidebar }) => {
           </div>
         </SidebarHeader>
 
+        {/* Content */}
         <SidebarContent>
           <Menu iconShape="circle">
-            <MenuItem
-              icon={<MdDashboard />}
-              //   suffix={<span className="badge red">new</span>}
-            >
-              dashboard
+            <MenuItem icon={<MdDashboard />}>
+              Dashboard
               <Link to="/admin" />
             </MenuItem>
           </Menu>
+
           <Menu iconShape="circle">
-            <SubMenu
-              //   suffix={<span className="badge yellow">3</span>}
-              icon={<FaGem />}
-              title="Features"
-            >
+            <SubMenu icon={<FaGem />} title="Features">
               <MenuItem>
                 Quản lý user
                 <Link to="/admin/user-manager" />
               </MenuItem>
-              <MenuItem>Quản lý bài Quiz</MenuItem>
-              <MenuItem>Quản lý câu hỏi <Link to="/admin/question" /> </MenuItem>
-              <MenuItem>
-                Quản lý blog <Link to={"/admin/admin-blog"} />
+
+              <MenuItem icon={<FaRegListAlt />}>
+                Quản lý Exam
+                <Link to="/admin/examlist" />
               </MenuItem>
+
+              <MenuItem>
+                Quản lý bài Quiz
+                <Link to="/admin/quiz" />
+              </MenuItem>
+
+              <MenuItem>
+                Quản lý câu hỏi
+                <Link to="/admin/question" />
+              </MenuItem>
+
+              <MenuItem>
+                Quản lý blog
+                <Link to="/admin/admin-blog" />
+              </MenuItem>
+
               <MenuItem>
                 Quản lý Flashcard
                 <Link to="/admin/flashcards" />
@@ -77,13 +90,9 @@ const SideBar = ({ image, collapsed, toggled, handleToggleSidebar }) => {
           </Menu>
         </SidebarContent>
 
+        {/* Footer */}
         <SidebarFooter style={{ textAlign: "center" }}>
-          <div
-            className="sidebar-btn-wrapper"
-            style={{
-              padding: "20px 24px",
-            }}
-          >
+          <div className="sidebar-btn-wrapper" style={{ padding: "20px 24px" }}>
             <a
               href="https://github.com/Giang-LHG"
               target="_blank"
@@ -104,7 +113,6 @@ const SideBar = ({ image, collapsed, toggled, handleToggleSidebar }) => {
           </div>
         </SidebarFooter>
       </ProSidebar>
-      ;
     </>
   );
 };
