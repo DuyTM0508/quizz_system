@@ -56,6 +56,15 @@ const authController = {
       { expiresIn: "365d" }
     );
   },
+
+   saveToken: (token) => {
+    if (token) {
+      localStorage.setItem("token", token);
+      console.log("Token đã lưu:", token); // Kiểm tra token sau khi lưu
+    } else {
+      console.error("Lỗi: Token không hợp lệ!");
+    }
+  },
   //Login
   loginUser: async (req, res) => {
     try {
@@ -87,11 +96,18 @@ const authController = {
           sameSite: "Strict",
         });
         const { password, ...others } = user.toObject();
+        // res.status(200).json({
+        //   DT: { access_token: accessToken, ...others },
+        //   EC: 0,
+        //   EM: "Login succeed",
+        // });
         res.status(200).json({
-          DT: { access_token: accessToken, ...others },
+          access_token: accessToken, // Đưa token ra ngoài DT
+          DT: { access_token: accessToken,...others }, 
           EC: 0,
           EM: "Login succeed",
         });
+        
       }
     } catch (error) {
       res.status(500).json(error);

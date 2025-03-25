@@ -27,7 +27,7 @@ exports.createFlashcard = async (req, res) => {
       title: req.body.title,
       description: req.body.description,
       questions: req.body.questions,
-      createdBy: req.userId, // Lấy từ token
+      createdBy: req.createdBy, // Lấy từ token
     });
     const savedFlashcard = await newFlashcard.save();
     res.status(201).json(savedFlashcard);
