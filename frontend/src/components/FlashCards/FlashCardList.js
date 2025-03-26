@@ -20,9 +20,10 @@ function FlashCardList({ flashcards = [] }) {
     }
   };
 
-  const filteredFlashcards = flashcards.filter(card =>
-    card.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    card.description.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredFlashcards = (flashcards || []).filter(
+    (card) =>
+      card?.title?.toLowerCase()?.includes(searchTerm.toLowerCase()) ||
+      card?.description?.toLowerCase()?.includes(searchTerm.toLowerCase())
   );
 
   const currentFlashcards = filteredFlashcards.slice(
@@ -47,7 +48,9 @@ function FlashCardList({ flashcards = [] }) {
           <FaSearch className="absolute left-3 top-3 text-gray-400" />
         </div>
         {filteredFlashcards.length === 0 ? (
-          <p className="text-center text-gray-600">No flashcards available. Create your first one!</p>
+          <p className="text-center text-gray-600">
+            No flashcards available. Create your first one!
+          </p>
         ) : (
           <div>
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -80,7 +83,9 @@ function FlashCardList({ flashcards = [] }) {
               </button>
               <button
                 onClick={handleNext}
-                disabled={(currentPage + 1) * itemsPerPage >= filteredFlashcards.length}
+                disabled={
+                  (currentPage + 1) * itemsPerPage >= filteredFlashcards.length
+                }
                 className="px-4 py-2 bg-blue-500 text-white rounded-lg disabled:opacity-50 flex items-center"
               >
                 Next <FaChevronRight className="ml-2" />

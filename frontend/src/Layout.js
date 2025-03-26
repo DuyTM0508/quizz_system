@@ -21,7 +21,7 @@ import AddFlashcard from "./components/FlashCards/AddFlashcard";
 import ProtectedRoute from "./pages/ProtectedRoute";
 import ExamList from "./pages/ExamList";
 
-
+import AdminRoute from "./pages/ProtectedAdminRoute";
 const Layout = () => {
   return (
     <>
@@ -40,6 +40,24 @@ const Layout = () => {
           <Route path="admin-blog" element={<AdminBlog />} />
           <Route path="admin-blog/addNewBlog" element={<AddNewBlog />} />
           <Route path="admin-blog/addNewBlog/:id" element={<AddNewBlog />} />
+        </Route>
+
+        <Route
+          path="/admin"
+          element={
+            <AdminRoute>
+              <Admin />
+            </AdminRoute>
+          }
+        >
+          <Route path="user-manager" element={<ManagerUser />}></Route>
+          <Route index element={<Dashboard />}></Route>
+          <Route path="admin-blog" element={<AdminBlog />}></Route>
+          <Route path="admin-blog/addNewBlog" element={<AddNewBlog />}></Route>
+          <Route
+            path="admin-blog/addNewBlog/:id"
+            element={<AddNewBlog />}
+          ></Route>
           <Route path="flashcards" element={<AdminFlashcard />} />
           <Route path="flashcard/add" element={<AddFlashcard />} />
           <Route path="flashcard/edit/:id" element={<EditFlashcard />} />

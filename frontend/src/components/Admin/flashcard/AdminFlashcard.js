@@ -22,6 +22,12 @@ const AdminFlashcard = () => {
     }
   };
 
+  // Lọc flashcards theo search
+  const filteredFlashcards = flashcards.filter(flashcard => 
+    flashcard.title.toLowerCase().includes(search.toLowerCase()) 
+    || flashcard.description.toLowerCase().includes(search.toLowerCase())
+  );
+
   return (
     <div className="container mx-auto p-4 space-y-6">
       <div className="bg-white rounded-lg shadow-lg overflow-hidden">
@@ -57,7 +63,7 @@ const AdminFlashcard = () => {
           </div>
 
           <div className="overflow-x-auto">
-            <AdminFlashCardList flashcards={flashcards} setFlashcards={setFlashcards} />
+            <AdminFlashCardList flashcards={filteredFlashcards} setFlashcards={setFlashcards} />
           </div>
         </div>
       </div>
