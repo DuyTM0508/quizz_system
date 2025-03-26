@@ -1,0 +1,53 @@
+// src/components/Exam/CreateExam.js
+import React from "react";
+import { Form, Button, Modal } from "react-bootstrap";
+
+const CreateExam = ({ show, handleClose, exam, setExam, onSubmit }) => {
+  const handleChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    setExam((prev) => ({
+      ...prev,
+      [name]: type === "checkbox" ? checked : value,
+    }));
+  };
+
+  return (
+    <Modal show={show} onHide={handleClose} centered>
+      <Modal.Header closeButton>
+        <Modal.Title>Create New Exam</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <Form>
+          {["title", "description", "category", "duration", "totalQuestions"].map((field) => (
+            <Form.Group className="mb-3" key={field}>
+              <Form.Label>{field}</Form.Label>
+              <Form.Control
+                type={["duration", "totalQuestions"].includes(field) ? "number" : "text"}
+                name={field}
+                value={exam[field]}
+                onChange={handleChange}
+                required={["title", "category", "duration", "totalQuestions"].includes(field)}
+              />
+            </Form.Group>
+          ))}
+
+          <Form.Group className="mb-3">
+            <Form.Check
+              type="checkbox"
+              label="Hidden"
+              name="hidden"
+              checked={exam.hidden}
+              onChange={handleChange}
+            />
+          </Form.Group>
+
+          <Button variant="primary" onClick={onSubmit}>
+            Create Exam
+          </Button>
+        </Form>
+      </Modal.Body>
+    </Modal>
+  );
+};
+
+export default CreateExam;

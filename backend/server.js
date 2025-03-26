@@ -12,6 +12,8 @@ const blogRouter = require("./app/routes/blog/blog.routes");
 const flashcardRouter = require("./app/routes/flashcardRoutes");
 // const questionRouter = require("./app/routes/questionRoutes");
 const dbConfig = require("./app/config/db.config");
+const examRouter = require("./app/routes/examRoutes");
+
 
 const app = express();
 dbConnection();
@@ -38,6 +40,8 @@ app.use("/v1/auth", authRouter);
 app.use("/v1/user", userRouter);
 app.use("/blogs", blogRouter);
 app.use("/flashcards", flashcardRouter);
+app.use("/exams", examRouter);
+
 // app.use("/questions", questionRouter);
 
 // Initialize roles in DB
@@ -57,7 +61,7 @@ app.use("/flashcards", flashcardRouter);
 // }
 
 // Start server
-const PORT = process.env.PORT || 9998;
+const PORT = process.env.PORT || 9999;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);
 });
