@@ -22,6 +22,7 @@ import ProtectedRoute from "./pages/ProtectedRoute";
 import ExamList from "./pages/ExamList";
 
 import AdminRoute from "./pages/ProtectedAdminRoute";
+import QuestList from "./components/Question/QuestionList";
 const Layout = () => {
   return (
     <>
@@ -62,6 +63,7 @@ const Layout = () => {
           <Route path="flashcard/add" element={<AddFlashcard />} />
           <Route path="flashcard/edit/:id" element={<EditFlashcard />} />
           <Route path="examlist" element={<ExamList />} /> {/* ✅ đã sửa */}
+          <Route path="question" element={<QuestList />} />
         </Route>
 
         <Route

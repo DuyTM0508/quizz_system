@@ -44,7 +44,7 @@ const TableUserPaginate = (props) => {
                     <th>{user._id}</th>
                     <td>{user.username}</td>
                     <td>{user.email}</td>
-                    <td>{user.role ? "Admin" : "User"}</td>
+                    <td>{user.admin ? "Admin" : "User"}</td>
                     <td>
                       <button
                         onClick={() => handleClickBtnView(user)}

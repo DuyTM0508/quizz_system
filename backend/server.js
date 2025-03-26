@@ -10,7 +10,7 @@ const authRouter = require("./app/routes/auth");
 const userRouter = require("./app/routes/userRouter");
 const blogRouter = require("./app/routes/blog/blog.routes");
 const flashcardRouter = require("./app/routes/flashcardRoutes");
-// const questionRouter = require("./app/routes/questionRoutes");
+const questionRouter = require("./app/routes/questionRoutes");
 const dbConfig = require("./app/config/db.config");
 const examRouter = require("./app/routes/examRoutes");
 
@@ -43,6 +43,7 @@ app.use("/flashcards", flashcardRouter);
 app.use("/exams", examRouter);
 
 // app.use("/questions", questionRouter);
+app.use("/questions", questionRouter);
 
 // Initialize roles in DB
 // const db = require("./app/models");
