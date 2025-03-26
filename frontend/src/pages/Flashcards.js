@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Routes, Route, useNavigate, useParams } from "react-router-dom";
+import { toast} from "react-toastify";
 import { getFlashcards, getFlashcardById, addFlashcard, updateFlashcard } from "../api/flashcardApi";
 import FlashCardList from "../components/FlashCards/FlashCardList";
 import FlashCardForm from "../components/FlashCards/FlashCardForm";
@@ -44,21 +45,24 @@ const Flashcards = () => {
     // Hàm xử lý lưu flashcard (cả tạo mới và chỉnh sửa)
     const handleSave = async (card) => {
         try {
-            if (card._id) {
-                // Cập nhật flashcard đã tồn tại
-                await updateFlashcard(card._id, card);
-                setFlashcards((prev) => prev.map((c) => (c._id === card._id ? card : c)));
-            } else {
-                // Thêm flashcard mới
-                const newFlashcard = await addFlashcard(card);
-                setFlashcards((prev) => [...prev, newFlashcard]);
-            }
-            navigate("/"); // Sau khi lưu, quay lại trang danh sách flashcards
+          if (card._id) {
+            // Cập nhật flashcard đã tồn tại
+            await updateFlashcard(card._id, card);
+            setFlashcards((prev) =>
+              prev.map((c) => (c._id === card._id ? card : c))
+            );
+          } else {
+            // Thêm flashcard mới
+            const newFlashcard = await addFlashcard(card);
+            setFlashcards((prev) => [...prev, newFlashcard]);
+          }
+          toast.success("create flashcard success");
+          navigate("/flashcards");
+          loadFlashcards();
         } catch (error) {
-            console.error("Error saving flashcard:", error);
+          console.error("Error saving flashcard:", error);
         }
-    };
-
+      };
     return (
         <Routes>
             <Route

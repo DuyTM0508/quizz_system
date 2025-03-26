@@ -96,21 +96,27 @@ isModerator = (req, res, next) => {
 isAdminOrOwner = async (req, res, next) => {
   try {
     const flashcard = await Flashcard.findById(req.params.id);
-    if (!flashcard)
+    if (!flashcard) {
       return res.status(404).json({ message: "Flashcard not found" });
+    }
 
+    // Kiểm tra xem người dùng có phải là người tạo flashcard không
     if (req.userId === flashcard.createdBy.toString()) {
       return next(); // Người tạo flashcard có quyền chỉnh sửa/xóa
     }
 
-    const user = await User.findById(req.userId).populate("roles");
-    if (user.roles.some((role) => role.name === "admin")) {
+    // Tìm người dùng theo ID
+    const user = await User.findById(req.userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Kiểm tra xem người dùng có phải là admin không
+    if (user.admin) {
       return next(); // Admin có quyền chỉnh sửa/xóa tất cả
     }
 
-    return res
-      .status(403)
-      .json({ message: "Unauthorized to modify this flashcard" });
+    return res.status(403).json({ message: "Unauthorized to modify this flashcard" });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
