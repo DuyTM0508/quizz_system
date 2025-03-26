@@ -19,6 +19,7 @@ import AdminFlashcard from "./components/Admin/flashcard/AdminFlashcard";
 import EditFlashcard from "./components/FlashCards/EditFlashCard";
 import AddFlashcard from "./components/FlashCards/AddFlashcard";
 import ProtectedRoute from "./pages/ProtectedRoute";
+import AdminRoute from "./pages/ProtectedAdminRoute";
 const Layout = () => {
   return (
     <>
@@ -30,7 +31,14 @@ const Layout = () => {
           <Route path="/blog" element={<BlogPage />} />{" "}
           <Route path="/blog/:id" element={<BlogDetail />} />{" "}
         </Route>
-        <Route path="/admin" element={<Admin />}>
+        <Route
+          path="/admin"
+          element={
+            <AdminRoute>
+              <Admin />
+            </AdminRoute>
+          }
+        >
           <Route path="user-manager" element={<ManagerUser />}></Route>
           <Route index element={<Dashboard />}></Route>
           <Route path="admin-blog" element={<AdminBlog />}></Route>
