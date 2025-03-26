@@ -1,15 +1,16 @@
 import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Route, Routes } from "react-router-dom";
+
 import Admin from "./components/Admin/Admin";
 import User from "./components/User/User";
 import Homepage from "./components/Home/Homepage";
 import Dashboard from "./components/Admin/Content/Dashboard";
 import ManagerUser from "./components/Admin/Content/ManagerUser";
 import Login from "./components/Auth/Login";
-import App from "./App";
-import { ToastContainer } from "react-toastify";
 import Register from "./components/Auth/Register";
+import App from "./App";
+
 import Flashcards from "./pages/Flashcards";
 import BlogPage from "./pages/blog/BlogPage";
 import BlogDetail from "./pages/blog/BlogDetail";
@@ -18,17 +19,20 @@ import AddNewBlog from "./pages/admin/blog/components/AddNewBlog";
 import AdminFlashcard from "./components/Admin/flashcard/AdminFlashcard";
 import EditFlashcard from "./components/FlashCards/EditFlashCard";
 import AddFlashcard from "./components/FlashCards/AddFlashcard";
-import ProtectedRoute from "./pages/ProtectedRoute";
-import ExamList from "./pages/ExamList";
 
+import ProtectedRoute from "./pages/ProtectedRoute";
+import ExamList from "./components/Exam/ExamList";
+import ExamDetail from "./components/Exam/ExamDetail";
+
+import { ToastContainer } from "react-toastify";
 
 const Layout = () => {
   return (
     <>
       <Routes>
         <Route path="/" element={<App />}>
-          <Route path="user" element={<User />} />
           <Route index element={<Homepage />} />
+          <Route path="user" element={<User />} />
           <Route path="flashcards/*" element={<Flashcards />} />
           <Route path="blog" element={<BlogPage />} />
           <Route path="blog/:id" element={<BlogDetail />} />
@@ -43,7 +47,9 @@ const Layout = () => {
           <Route path="flashcards" element={<AdminFlashcard />} />
           <Route path="flashcard/add" element={<AddFlashcard />} />
           <Route path="flashcard/edit/:id" element={<EditFlashcard />} />
-          <Route path="examlist" element={<ExamList />} /> {/* ✅ đã sửa */}
+          <Route path="examlist" element={<ExamList />} />
+          <Route path="/admin/exam/:id" element={<ExamDetail />} />
+
         </Route>
 
         <Route
@@ -54,7 +60,6 @@ const Layout = () => {
             </ProtectedRoute>
           }
         />
-
         <Route
           path="/register"
           element={

@@ -2,32 +2,14 @@ const mongoose = require("mongoose");
 
 const examSchema = new mongoose.Schema(
   {
-    title: {
-      type: String,
-      required: true,
-      trim: true,
-    },
-    description: {
-      type: String,
-      trim: true,
-    },
-    category: {
-      type: String,
-      required: true,
-    },
-    duration: {
-      type: Number,
-      required: true,
-      min: 1,
-    },
-    hidden: {
-      type: Boolean,
-      default: false,
-    },
+    title: { type: String, required: true },
+    description: { type: String },
+    category: { type: String, required: true },
+    duration: { type: Number, required: true }, // minutes
+    hidden: { type: Boolean, default: false },
+    totalQuestions: { type: Number, default: 0 },
   },
-  {
-    timestamps: true,
-  }
+  { timestamps: true }
 );
 
 module.exports = mongoose.model("Exam", examSchema);
