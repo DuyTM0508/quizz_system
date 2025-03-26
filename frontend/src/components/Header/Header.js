@@ -29,26 +29,53 @@ const Header = () => {
         </NavLink>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="me-auto">
-            <NavLink to="/" className="nav-link">
-              Home
-            </NavLink>
-            <NavLink to="/user" className="nav-link">
-              User
-            </NavLink>
-            <NavLink to="/admin" className="nav-link">
-              Admin
-            </NavLink>
-            <NavLink to="/blog" className="nav-link">
-              Blog
-            </NavLink>
-            <NavLink to="/flashcards" className="nav-link">
-              FlashCard
-            </NavLink>
-            {/* <Nav.Link href="#home">Home</Nav.Link>
+          {account.role === true ? (
+            <>
+              {" "}
+              <Nav className="me-auto">
+                <NavLink to="/" className="nav-link">
+                  Home
+                </NavLink>
+                <NavLink to="/user" className="nav-link">
+                  User
+                </NavLink>
+                <NavLink to="/admin" className="nav-link">
+                  Admin
+                </NavLink>
+                <NavLink to="/blog" className="nav-link">
+                  Blog
+                </NavLink>
+                <NavLink to="/flashcards" className="nav-link">
+                  FlashCard
+                </NavLink>
+                {/* <Nav.Link href="#home">Home</Nav.Link>
             <Nav.Link href="/user">User</Nav.Link>
             <Nav.Link href="/admin">Admin</Nav.Link> */}
-          </Nav>
+              </Nav>
+            </>
+          ) : (
+            <>
+              {" "}
+              <Nav className="me-auto">
+                <NavLink to="/" className="nav-link">
+                  Home
+                </NavLink>
+                <NavLink to="/user" className="nav-link">
+                  User
+                </NavLink>
+                <NavLink to="/blog" className="nav-link">
+                  Blog
+                </NavLink>
+                <NavLink to="/flashcards" className="nav-link">
+                  FlashCard
+                </NavLink>
+                {/* <Nav.Link href="#home">Home</Nav.Link>
+            <Nav.Link href="/user">User</Nav.Link>
+            <Nav.Link href="/admin">Admin</Nav.Link> */}
+              </Nav>
+            </>
+          )}
+
           {isAuthenticated === false ? (
             <>
               <button className="btn-login" onClick={() => handleLoginClick()}>

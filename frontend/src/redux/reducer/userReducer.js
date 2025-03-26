@@ -23,7 +23,7 @@ const userReducer = (state = INITIAL_STATE, action) => {
           refresh_token: action?.payload?.DT?.refresh_token,
           username: action?.payload?.DT?.username,
           image: action?.payload?.DT?.image,
-          role: action?.payload?.DT?.role,
+          role: action?.payload?.DT?.admin,
         },
         isAuthenticated: true,
       };
