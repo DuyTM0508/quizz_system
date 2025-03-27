@@ -19,7 +19,8 @@ import AdminFlashcard from "./components/Admin/flashcard/AdminFlashcard";
 import EditFlashcard from "./components/FlashCards/EditFlashCard";
 import AddFlashcard from "./components/FlashCards/AddFlashcard";
 import ProtectedRoute from "./pages/ProtectedRoute";
-import ExamList from "./pages/ExamList";
+import ExamList from "./components/Exam/ExamList";
+import ExamDetail from './components/Exam/ExamDetail';
 
 import AdminRoute from "./pages/ProtectedAdminRoute";
 import QuestList from "./components/Question/QuestionList";
@@ -62,7 +63,8 @@ const Layout = () => {
           <Route path="flashcards" element={<AdminFlashcard />} />
           <Route path="flashcard/add" element={<AddFlashcard />} />
           <Route path="flashcard/edit/:id" element={<EditFlashcard />} />
-          <Route path="examlist" element={<ExamList />} /> {/* ✅ đã sửa */}
+          <Route path="examlist" element={<ExamList />} />
+          <Route path="exams/:id" element={<ExamDetail />} />
           <Route path="question" element={<QuestList />} />
         </Route>
 
