@@ -16,7 +16,7 @@ const BlogPage = () => {
   if (loading) return <div>Loading...</div>;
   return (
     <div className="blog-page">
-      <header className="blog-header">
+      <header className="blog-header mt-20">
         <h1>
           Our <span className="highlight">Blog</span>
         </h1>

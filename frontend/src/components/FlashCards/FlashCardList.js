@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaChevronLeft, FaChevronRight, FaSearch } from "react-icons/fa";
 
@@ -31,68 +31,176 @@ function FlashCardList({ flashcards = [] }) {
     (currentPage + 1) * itemsPerPage
   );
 
-  return (
-    <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto">
-        <h2 className="text-3xl font-bold text-gray-900 mb-6 text-center">
-          Your Flashcards
-        </h2>
-        <div className="relative mb-6 max-w-md mx-auto">
-          <input
-            type="text"
-            placeholder="Search flashcards..."
-            className="w-full px-4 py-2 pl-10 pr-4 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-          <FaSearch className="absolute left-3 top-3 text-gray-400" />
-        </div>
-        {filteredFlashcards.length === 0 ? (
-          <p className="text-center text-gray-600">
-            No flashcards available. Create your first one!
-          </p>
-        ) : (
-          <div>
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {currentFlashcards.map((card, index) => (
-                <div
-                  key={card._id || `flashcard-${index}`}
-                  onClick={() => navigate(`/flashcards/view/${card._id}`)}
-                  className="bg-white rounded-lg shadow-md p-6 transition-all duration-300 hover:shadow-lg cursor-pointer"
-                >
-                  <h3 className="text-xl font-semibold text-gray-800">
-                    {card.title}
-                  </h3>
-                  <p className="mt-2 text-gray-600 line-clamp-2">
-                    {card.description}
-                  </p>
-                  <p className="mt-2 text-sm text-gray-500">
-                    Questions: {card.questions?.length || 0}
-                  </p>
-                </div>
-              ))}
-            </div>
+  // Card hover style function to be used with onMouseOver/onMouseOut
+  const [hoveredCardId, setHoveredCardId] = useState(null);
 
-            <div className="flex justify-center mt-6 space-x-4">
-              <button
-                onClick={handlePrev}
-                disabled={currentPage === 0}
-                className="px-4 py-2 bg-blue-500 text-white rounded-lg disabled:opacity-50 flex items-center"
+  return (
+    <div className="container py-5" style={{ backgroundColor: "#f8f9fa" }}>
+      <div className="row justify-content-center">
+        <div className="col-lg-10">
+          <div
+            className="card border-0 mb-5"
+            style={{
+              boxShadow: "0 0.125rem 0.25rem rgba(0, 0, 0, 0.075)",
+              borderRadius: "10px",
+            }}
+          >
+            <div className="card-body p-4">
+              <h2 className="display-6 text-center mb-4 fw-bold text-primary">
+                Your Flashcards
+              </h2>
+
+              <div
+                className="input-group mb-4 mx-auto"
+                style={{
+                  maxWidth: "500px",
+                  borderRadius: "8px",
+                  overflow: "hidden",
+                }}
               >
-                <FaChevronLeft className="mr-2" /> Prev
-              </button>
-              <button
-                onClick={handleNext}
-                disabled={
-                  (currentPage + 1) * itemsPerPage >= filteredFlashcards.length
-                }
-                className="px-4 py-2 bg-blue-500 text-white rounded-lg disabled:opacity-50 flex items-center"
-              >
-                Next <FaChevronRight className="ml-2" />
-              </button>
+                <span
+                  className="input-group-text bg-white"
+                  style={{ borderColor: "#dee2e6" }}
+                >
+                  <FaSearch className="text-secondary" />
+                </span>
+                <input
+                  type="text"
+                  className="form-control border-start-0"
+                  placeholder="Search flashcards..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  style={{ borderColor: "#dee2e6", boxShadow: "none" }}
+                />
+              </div>
+
+              {filteredFlashcards.length === 0 ? (
+                <div className="alert alert-info text-center">
+                  No flashcards available. Create your first one!
+                </div>
+              ) : (
+                <>
+                  <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mb-4">
+                    {currentFlashcards.map((card, index) => (
+                      <div
+                        className="col"
+                        key={card._id || `flashcard-${index}`}
+                      >
+                        <div
+                          className="card h-100 border-0"
+                          onClick={() =>
+                            navigate(`/flashcards/view/${card._id}`)
+                          }
+                          onMouseOver={() =>
+                            setHoveredCardId(card._id || `flashcard-${index}`)
+                          }
+                          onMouseOut={() => setHoveredCardId(null)}
+                          style={{
+                            cursor: "pointer",
+                            borderRadius: "10px",
+                            boxShadow:
+                              "0 0.125rem 0.25rem rgba(0, 0, 0, 0.075)",
+                            transition: "all 0.3s ease",
+                            transform:
+                              hoveredCardId ===
+                              (card._id || `flashcard-${index}`)
+                                ? "translateY(-5px)"
+                                : "translateY(0)",
+                            boxShadow:
+                              hoveredCardId ===
+                              (card._id || `flashcard-${index}`)
+                                ? "0 10px 20px rgba(0,0,0,0.1)"
+                                : "0 0.125rem 0.25rem rgba(0, 0, 0, 0.075)",
+                            borderColor:
+                              hoveredCardId ===
+                              (card._id || `flashcard-${index}`)
+                                ? "#0d6efd"
+                                : "transparent",
+                          }}
+                        >
+                          <div className="card-body p-4">
+                            <h5 className="card-title fw-bold text-truncate">
+                              {card.title}
+                            </h5>
+                            <p
+                              className="card-text text-secondary mb-3"
+                              style={{
+                                display: "-webkit-box",
+                                WebkitLineClamp: 2,
+                                WebkitBoxOrient: "vertical",
+                                overflow: "hidden",
+                              }}
+                            >
+                              {card.description}
+                            </p>
+                            <div className="d-flex align-items-center">
+                              <span
+                                className="badge bg-primary rounded-pill"
+                                style={{
+                                  fontWeight: "500",
+                                  padding: "6px 12px",
+                                }}
+                              >
+                                {card.questions?.length || 0} Questions
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  <nav aria-label="Flashcard navigation">
+                    <ul className="pagination justify-content-center">
+                      <li
+                        className={`page-item ${
+                          currentPage === 0 ? "disabled" : ""
+                        }`}
+                      >
+                        <button
+                          className="page-link d-flex align-items-center"
+                          onClick={handlePrev}
+                          disabled={currentPage === 0}
+                          style={{
+                            color: "#0d6efd",
+                            borderRadius: "5px",
+                            margin: "0 5px",
+                          }}
+                        >
+                          <FaChevronLeft className="me-1" size={12} /> Previous
+                        </button>
+                      </li>
+                      <li
+                        className={`page-item ${
+                          (currentPage + 1) * itemsPerPage >=
+                          filteredFlashcards.length
+                            ? "disabled"
+                            : ""
+                        }`}
+                      >
+                        <button
+                          className="page-link d-flex align-items-center"
+                          onClick={handleNext}
+                          disabled={
+                            (currentPage + 1) * itemsPerPage >=
+                            filteredFlashcards.length
+                          }
+                          style={{
+                            color: "#0d6efd",
+                            borderRadius: "5px",
+                            margin: "0 5px",
+                          }}
+                        >
+                          Next <FaChevronRight className="ms-1" size={12} />
+                        </button>
+                      </li>
+                    </ul>
+                  </nav>
+                </>
+              )}
             </div>
           </div>
-        )}
+        </div>
       </div>
     </div>
   );

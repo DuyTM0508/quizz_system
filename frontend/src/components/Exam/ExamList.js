@@ -10,8 +10,29 @@ import {
   Pagination,
   ButtonGroup,
   Modal,
+  Row,
+  Col,
+  Badge,
+  Dropdown,
+  OverlayTrigger,
+  Tooltip,
 } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import {
+  FaSearch,
+  FaPlus,
+  FaEdit,
+  FaTrashAlt,
+  FaEye,
+  FaEyeSlash,
+  FaQuestionCircle,
+  FaClock,
+  FaTag,
+  FaFilter,
+  FaSortAmountDown,
+  FaSortAmountUp,
+} from "react-icons/fa";
+import "./ExamList.css";
 
 const API_URL = "http://localhost:9999/exams";
 
@@ -28,6 +49,11 @@ const ExamList = () => {
   const [editExam, setEditExam] = useState(null);
   const [modalShow, setModalShow] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
+  const [sortField, setSortField] = useState("title");
+  const [sortDirection, setSortDirection] = useState("asc");
+  const [filterHidden, setFilterHidden] = useState(false);
+  const [categories, setCategories] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState("All");
   const examsPerPage = 5;
 
   const navigate = useNavigate();
@@ -35,6 +61,13 @@ const ExamList = () => {
   useEffect(() => {
     fetchExams();
   }, []);
+
+  useEffect(() => {
+    if (exams.length > 0) {
+      const uniqueCategories = [...new Set(exams.map((exam) => exam.category))];
+      setCategories(uniqueCategories);
+    }
+  }, [exams]);
 
   const fetchExams = async () => {
     try {
@@ -74,7 +107,7 @@ const ExamList = () => {
   const handleUpdateExam = async () => {
     const confirmEdit = window.confirm("Xác nhận cập nhật bài thi?");
     if (!confirmEdit) return;
-  
+
     try {
       await axios.put(`${API_URL}/${editExam._id}`, editExam);
       setExams(exams.map((e) => (e._id === editExam._id ? editExam : e)));
@@ -84,12 +117,13 @@ const ExamList = () => {
       console.error("Error updating exam:", err);
     }
   };
-  
 
   const handleDelete = async (id) => {
-    const confirmDelete = window.confirm("Bạn có chắc chắn muốn xóa bài thi này?");
+    const confirmDelete = window.confirm(
+      "Bạn có chắc chắn muốn xóa bài thi này?"
+    );
     if (!confirmDelete) return;
-  
+
     try {
       await axios.delete(`${API_URL}/${id}`);
       setExams(exams.filter((e) => e._id !== id));
@@ -97,7 +131,6 @@ const ExamList = () => {
       console.error("Error deleting exam:", err);
     }
   };
-  
 
   const toggleHide = async (id, hiddenStatus) => {
     try {
@@ -110,111 +143,349 @@ const ExamList = () => {
     }
   };
 
-  const filteredExams = Array.isArray(exams)
+  const toggleSort = (field) => {
+    if (sortField === field) {
+      setSortDirection(sortDirection === "asc" ? "desc" : "asc");
+    } else {
+      setSortField(field);
+      setSortDirection("asc");
+    }
+  };
+
+  const sortExams = (a, b) => {
+    if (sortField === "title") {
+      return sortDirection === "asc"
+        ? a.title.localeCompare(b.title)
+        : b.title.localeCompare(a.title);
+    } else if (sortField === "duration") {
+      return sortDirection === "asc"
+        ? a.duration - b.duration
+        : b.duration - a.duration;
+    } else if (sortField === "category") {
+      return sortDirection === "asc"
+        ? a.category.localeCompare(b.category)
+        : b.category.localeCompare(a.category);
+    }
+    return 0;
+  };
+
+  let filteredExams = Array.isArray(exams)
     ? exams.filter(
         (e) =>
-          e.title.toLowerCase().includes(search.toLowerCase()) ||
-          e.description.toLowerCase().includes(search.toLowerCase())
+          (e.title.toLowerCase().includes(search.toLowerCase()) ||
+            e.description.toLowerCase().includes(search.toLowerCase())) &&
+          (selectedCategory === "All" || e.category === selectedCategory) &&
+          (filterHidden ? true : !e.hidden)
       )
     : [];
+
+  filteredExams = filteredExams.sort(sortExams);
 
   const indexOfLast = currentPage * examsPerPage;
   const indexOfFirst = indexOfLast - examsPerPage;
   const currentExams = filteredExams.slice(indexOfFirst, indexOfLast);
 
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+  const getCategoryColor = (category) => {
+    const colors = [
+      "primary",
+      "success",
+      "danger",
+      "warning",
+      "info",
+      "secondary",
+      "dark",
+      "primary",
+      "success",
+      "danger",
+    ];
+
+    const index = categories.indexOf(category) % colors.length;
+    return colors[index];
+  };
+
   return (
-    <Container className="mt-4">
-      <h1 className="text-center mb-4 bg-primary text-white p-3 rounded">
-        Exam List
-      </h1>
-      <InputGroup className="mb-4 rounded">
-        <Form.Control
-          type="text"
-          placeholder="Search exams"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
-      </InputGroup>
-      <div className="text-center mb-2">
-        <ButtonGroup>
+    <Container className="mt-4 exam-list-container">
+      <div className="header-section mb-4">
+        <h1 className="text-center mb-4">
+          <span className="exam-title">Exam Management</span>
+        </h1>
+        <p className="text-center text-muted">
+          Manage your exams, create new ones, or modify existing tests
+        </p>
+      </div>
+
+      <Row className="mb-4 search-filter-section">
+        <Col md={6}>
+          <InputGroup>
+            <InputGroup.Text className="search-icon">
+              <FaSearch />
+            </InputGroup.Text>
+            <Form.Control
+              type="text"
+              placeholder="Search by title or description..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="search-input"
+            />
+          </InputGroup>
+        </Col>
+        <Col md={6} className="d-flex justify-content-end">
+          <ButtonGroup className="me-2">
+            <Dropdown>
+              <Dropdown.Toggle
+                variant="outline-secondary"
+                id="dropdown-category"
+              >
+                <FaFilter className="me-1" /> {selectedCategory}
+              </Dropdown.Toggle>
+              <Dropdown.Menu>
+                <Dropdown.Item onClick={() => setSelectedCategory("All")}>
+                  All Categories
+                </Dropdown.Item>
+                <Dropdown.Divider />
+                {categories.map((category) => (
+                  <Dropdown.Item
+                    key={category}
+                    onClick={() => setSelectedCategory(category)}
+                  >
+                    {category}
+                  </Dropdown.Item>
+                ))}
+              </Dropdown.Menu>
+            </Dropdown>
+          </ButtonGroup>
+
+          <ButtonGroup className="me-2">
+            <OverlayTrigger
+              placement="top"
+              overlay={<Tooltip>Toggle hidden exams</Tooltip>}
+            >
+              <Button
+                variant={filterHidden ? "primary" : "outline-secondary"}
+                onClick={() => setFilterHidden(!filterHidden)}
+              >
+                {filterHidden ? <FaEye /> : <FaEyeSlash />}
+              </Button>
+            </OverlayTrigger>
+          </ButtonGroup>
+
           <Button
             variant="primary"
             onClick={() => setModalShow(true)}
-            size="sm"
+            className="create-btn"
           >
-            Create New Exam
+            <FaPlus className="me-1" /> Create Exam
           </Button>
-        </ButtonGroup>
-      </div>
-      <ListGroup className="mt-4">
-        {currentExams.map(
-          (e) =>
-            !e.hidden && (
-              <ListGroup.Item
-                key={e._id}
-                className="d-flex justify-content-between align-items-center mb-3 p-3 border rounded shadow-sm"
+        </Col>
+      </Row>
+
+      <Row className="mb-3 sort-section">
+        <Col>
+          <div className="d-flex align-items-center">
+            <small className="text-muted me-2">Sort by:</small>
+            <ButtonGroup size="sm">
+              <Button
+                variant={
+                  sortField === "title" ? "secondary" : "outline-secondary"
+                }
+                onClick={() => toggleSort("title")}
+                className="sort-btn"
               >
-                <Card className="w-100 border-0">
-                  <Card.Body>
-                    <h5 className="text-primary">{e.title}</h5>
-                    <small className="text-muted">{e.category}</small>
-                    <p>{e.description}</p>
-                    <small>Duration: {e.duration} minutes</small>
-                  </Card.Body>
-                </Card>
-                <div className="d-flex flex-column gap-2 align-items-end">
-                  <Button
-                    variant="success"
-                    size="sm"
-                    onClick={() => navigate(`/admin/exams/${e._id}`)}
-                  >
-                    Add Questions
-                  </Button>
+                Title{" "}
+                {sortField === "title" &&
+                  (sortDirection === "asc" ? (
+                    <FaSortAmountUp className="ms-1" />
+                  ) : (
+                    <FaSortAmountDown className="ms-1" />
+                  ))}
+              </Button>
+              <Button
+                variant={
+                  sortField === "category" ? "secondary" : "outline-secondary"
+                }
+                onClick={() => toggleSort("category")}
+                className="sort-btn"
+              >
+                Category{" "}
+                {sortField === "category" &&
+                  (sortDirection === "asc" ? (
+                    <FaSortAmountUp className="ms-1" />
+                  ) : (
+                    <FaSortAmountDown className="ms-1" />
+                  ))}
+              </Button>
+              <Button
+                variant={
+                  sortField === "duration" ? "secondary" : "outline-secondary"
+                }
+                onClick={() => toggleSort("duration")}
+                className="sort-btn"
+              >
+                Duration{" "}
+                {sortField === "duration" &&
+                  (sortDirection === "asc" ? (
+                    <FaSortAmountUp className="ms-1" />
+                  ) : (
+                    <FaSortAmountDown className="ms-1" />
+                  ))}
+              </Button>
+            </ButtonGroup>
+          </div>
+        </Col>
+      </Row>
 
-                  <Button
-                    variant="info"
-                    size="sm"
-                    onClick={() => {
-                      setEditExam(e);
-                      setModalShow(true);
-                    }}
-                  >
-                    Edit
-                  </Button>
-                  <Button
-                    variant="danger"
-                    size="sm"
-                    onClick={() => handleDelete(e._id)}
-                  >
-                    Delete
-                  </Button>
-                  <Button
-                    variant="secondary"
-                    size="sm"
-                    onClick={() => toggleHide(e._id, e.hidden)}
-                  >
-                    {e.hidden ? "Show" : "Hide"}
-                  </Button>
-                </div>
-              </ListGroup.Item>
-            )
-        )}
-      </ListGroup>
-      <Pagination className="mt-4">
-        {[...Array(Math.ceil(filteredExams.length / examsPerPage))].map(
-          (_, idx) => (
-            <Pagination.Item
-              key={idx + 1}
-              active={idx + 1 === currentPage}
-              onClick={() => setCurrentPage(idx + 1)}
+      {currentExams.length === 0 ? (
+        <div className="text-center p-5 empty-state">
+          <FaQuestionCircle size={50} className="mb-3 text-muted" />
+          <h4>No Exams Found</h4>
+          <p className="text-muted">
+            Try adjusting your search or filters, or create a new exam.
+          </p>
+        </div>
+      ) : (
+        <div className="exam-cards">
+          {currentExams.map((e) => (
+            <Card
+              key={e._id}
+              className={`mb-3 exam-card ${e.hidden ? "hidden-exam" : ""}`}
             >
-              {idx + 1}
-            </Pagination.Item>
-          )
-        )}
-      </Pagination>
+              <Card.Body>
+                <div className="d-flex justify-content-center align-items-start">
+                  <div>
+                    <h4 className="exam-card-title">{e.title}</h4>
+                    <Badge
+                      bg={getCategoryColor(e.category)}
+                      className="category-badge"
+                    >
+                      <FaTag className="me-1" /> {e.category}
+                    </Badge>
+                    {e.hidden && (
+                      <Badge bg="secondary" className="ms-2">
+                        <FaEyeSlash className="me-1" /> Hidden
+                      </Badge>
+                    )}
+                  </div>
+                  <div className="duration-badge">
+                    <FaClock className="me-1" /> {e.duration} min
+                  </div>
+                </div>
 
-      {/* Modal */}
+                <Card.Text className="mt-3 exam-description">
+                  {e.description}
+                </Card.Text>
+
+                <div className="d-flex justify-content-between align-items-center mt-3">
+                  <div className="d-flex gap-2">
+                    <Button
+                      variant="success"
+                      size="sm"
+                      onClick={() => navigate(`/admin/exams/${e._id}`)}
+                      className="action-btn"
+                    >
+                      <FaQuestionCircle className="me-1" /> Questions
+                    </Button>
+                  </div>
+
+                  <div className="d-flex gap-2">
+                    <Button
+                      variant="outline-primary"
+                      size="sm"
+                      onClick={() => {
+                        setEditExam(e);
+                        setModalShow(true);
+                      }}
+                      className="action-btn"
+                    >
+                      <FaEdit className="me-1" /> Edit
+                    </Button>
+
+                    <Button
+                      variant="outline-danger"
+                      size="sm"
+                      onClick={() => handleDelete(e._id)}
+                      className="action-btn"
+                    >
+                      <FaTrashAlt className="me-1" /> Delete
+                    </Button>
+
+                    <Button
+                      variant="outline-secondary"
+                      size="sm"
+                      onClick={() => toggleHide(e._id, e.hidden)}
+                      className="action-btn"
+                    >
+                      {e.hidden ? (
+                        <FaEye className="me-1" />
+                      ) : (
+                        <FaEyeSlash className="me-1" />
+                      )}
+                      {e.hidden ? "Show" : "Hide"}
+                    </Button>
+                  </div>
+                </div>
+              </Card.Body>
+            </Card>
+          ))}
+        </div>
+      )}
+
+      {filteredExams.length > examsPerPage && (
+        <div className="d-flex justify-content-center mt-4">
+          <Pagination>
+            <Pagination.First
+              onClick={() => paginate(1)}
+              disabled={currentPage === 1}
+            />
+            <Pagination.Prev
+              onClick={() => paginate(currentPage - 1)}
+              disabled={currentPage === 1}
+            />
+
+            {[...Array(Math.ceil(filteredExams.length / examsPerPage))].map(
+              (_, idx) => {
+                // Show limited page numbers with ellipsis
+                if (
+                  idx === 0 ||
+                  idx === Math.ceil(filteredExams.length / examsPerPage) - 1 ||
+                  (idx >= currentPage - 2 && idx <= currentPage + 0)
+                ) {
+                  return (
+                    <Pagination.Item
+                      key={idx + 1}
+                      active={idx + 1 === currentPage}
+                      onClick={() => paginate(idx + 1)}
+                    >
+                      {idx + 1}
+                    </Pagination.Item>
+                  );
+                } else if (idx === currentPage - 3 || idx === currentPage + 1) {
+                  return <Pagination.Ellipsis key={`ellipsis-${idx}`} />;
+                }
+                return null;
+              }
+            )}
+
+            <Pagination.Next
+              onClick={() => paginate(currentPage + 1)}
+              disabled={
+                currentPage === Math.ceil(filteredExams.length / examsPerPage)
+              }
+            />
+            <Pagination.Last
+              onClick={() =>
+                paginate(Math.ceil(filteredExams.length / examsPerPage))
+              }
+              disabled={
+                currentPage === Math.ceil(filteredExams.length / examsPerPage)
+              }
+            />
+          </Pagination>
+        </div>
+      )}
+
+      {/* Create/Edit Modal */}
       <Modal
         show={modalShow}
         onHide={() => {
@@ -222,10 +493,19 @@ const ExamList = () => {
           setEditExam(null);
         }}
         centered
+        className="exam-modal"
       >
-        <Modal.Header closeButton>
+        <Modal.Header closeButton className="modal-header">
           <Modal.Title>
-            {editExam ? "Edit Exam" : "Create New Exam"}
+            {editExam ? (
+              <>
+                <FaEdit className="me-2" /> Edit Exam
+              </>
+            ) : (
+              <>
+                <FaPlus className="me-2" /> Create New Exam
+              </>
+            )}
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
@@ -240,6 +520,8 @@ const ExamList = () => {
                     ? setEditExam({ ...editExam, title: e.target.value })
                     : setNewExam({ ...newExam, title: e.target.value })
                 }
+                placeholder="Enter exam title"
+                className="form-input"
               />
             </Form.Group>
 
@@ -254,54 +536,87 @@ const ExamList = () => {
                     ? setEditExam({ ...editExam, description: e.target.value })
                     : setNewExam({ ...newExam, description: e.target.value })
                 }
+                placeholder="Enter exam description"
+                className="form-input"
               />
             </Form.Group>
 
-            <Form.Group className="mb-3">
-              <Form.Label>Category</Form.Label>
-              <Form.Control
-                type="text"
-                value={editExam ? editExam.category : newExam.category}
-                onChange={(e) =>
-                  editExam
-                    ? setEditExam({ ...editExam, category: e.target.value })
-                    : setNewExam({ ...newExam, category: e.target.value })
-                }
-              />
-            </Form.Group>
+            <Row>
+              <Col md={6}>
+                <Form.Group className="mb-3">
+                  <Form.Label>Category</Form.Label>
+                  <Form.Control
+                    type="text"
+                    value={editExam ? editExam.category : newExam.category}
+                    onChange={(e) =>
+                      editExam
+                        ? setEditExam({ ...editExam, category: e.target.value })
+                        : setNewExam({ ...newExam, category: e.target.value })
+                    }
+                    placeholder="Enter category"
+                    className="form-input"
+                    list="categoryOptions"
+                  />
+                  <datalist id="categoryOptions">
+                    {categories.map((cat) => (
+                      <option key={cat} value={cat} />
+                    ))}
+                  </datalist>
+                </Form.Group>
+              </Col>
+              <Col md={6}>
+                <Form.Group className="mb-3">
+                  <Form.Label>Duration (minutes)</Form.Label>
+                  <Form.Control
+                    type="number"
+                    value={editExam ? editExam.duration : newExam.duration}
+                    onChange={(e) =>
+                      editExam
+                        ? setEditExam({ ...editExam, duration: e.target.value })
+                        : setNewExam({ ...newExam, duration: e.target.value })
+                    }
+                    min="1"
+                    placeholder="Enter duration"
+                    className="form-input"
+                  />
+                </Form.Group>
+              </Col>
+            </Row>
 
-            <Form.Group className="mb-3">
-              <Form.Label>Duration (minutes)</Form.Label>
-              <Form.Control
-                type="number"
-                value={editExam ? editExam.duration : newExam.duration}
-                onChange={(e) =>
-                  editExam
-                    ? setEditExam({ ...editExam, duration: e.target.value })
-                    : setNewExam({ ...newExam, duration: e.target.value })
-                }
-              />
-            </Form.Group>
-
-            <Form.Group className="mb-3">
+            <Form.Group className="mb-4">
               <Form.Check
-                type="checkbox"
-                label="Hidden"
+                type="switch"
+                id="hidden-switch"
+                label="Hidden from students"
                 checked={editExam ? editExam.hidden : newExam.hidden}
                 onChange={(e) =>
                   editExam
                     ? setEditExam({ ...editExam, hidden: e.target.checked })
                     : setNewExam({ ...newExam, hidden: e.target.checked })
                 }
+                className="form-switch"
               />
             </Form.Group>
 
-            <Button
-              variant="primary"
-              onClick={editExam ? handleUpdateExam : handleCreateExam}
-            >
-              {editExam ? "Update Exam" : "Create Exam"}
-            </Button>
+            <div className="d-flex justify-content-end">
+              <Button
+                variant="secondary"
+                onClick={() => {
+                  setModalShow(false);
+                  setEditExam(null);
+                }}
+                className="me-2"
+              >
+                Cancel
+              </Button>
+              <Button
+                variant="primary"
+                onClick={editExam ? handleUpdateExam : handleCreateExam}
+                className="submit-btn"
+              >
+                {editExam ? "Update Exam" : "Create Exam"}
+              </Button>
+            </div>
           </Form>
         </Modal.Body>
       </Modal>

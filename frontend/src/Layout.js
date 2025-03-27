@@ -19,11 +19,11 @@ import AdminFlashcard from "./components/Admin/flashcard/AdminFlashcard";
 import EditFlashcard from "./components/FlashCards/EditFlashCard";
 import AddFlashcard from "./components/FlashCards/AddFlashcard";
 import ProtectedRoute from "./pages/ProtectedRoute";
-import ExamList from "./components/Exam/ExamList";
 import ExamDetail from './components/Exam/ExamDetail';
 
 import AdminRoute from "./pages/ProtectedAdminRoute";
 import QuestList from "./components/Question/QuestionList";
+import ExamList from "./components/Exam/ExamList";
 const Layout = () => {
   return (
     <>

@@ -1,5 +1,3 @@
-"use client";
-
 import { useState } from "react";
 import { Search, Edit, Trash2, Plus, Eye } from "lucide-react";
 import useGetListBlog from "../../../services/modules/blog/hooks/useGetListBlog";

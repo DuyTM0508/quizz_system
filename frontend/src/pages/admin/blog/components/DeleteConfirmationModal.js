@@ -1,5 +1,3 @@
-"use client";
-
 const DeleteConfirmationModal = ({ isOpen, onClose, onConfirm, blogTitle }) => {
   if (!isOpen) return null;
 

@@ -1,0 +1,239 @@
+/* Main container styling */
+.exam-list-container {
+    max-width: 1200px;
+    padding-bottom: 50px;
+  }
+  
+  /* Header section styling */
+  .header-section {
+    padding: 30px 0 10px;
+    position: relative;
+  }
+  
+  .exam-title {
+    font-weight: 700;
+    color: #2c3e50;
+    position: relative;
+    display: inline-block;
+    padding-bottom: 10px;
+  }
+  
+  .exam-title:after {
+    content: "";
+    position: absolute;
+    width: 60%;
+    height: 4px;
+    background: linear-gradient(90deg, #4a6cf7, #6a11cb);
+    bottom: 0;
+    left: 20%;
+    border-radius: 10px;
+  }
+  
+  /* Search and filter section */
+  .search-filter-section {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    margin-bottom: 25px !important;
+  }
+  
+  .search-input {
+    border-radius: 0 5px 5px 0;
+    border: 1px solid #ced4da;
+    padding: 10px 15px;
+    transition: all 0.3s;
+  }
+  
+  .search-input:focus {
+    box-shadow: 0 0 0 0.25rem rgba(74, 108, 247, 0.25);
+    border-color: #4a6cf7;
+  }
+  
+  .search-icon {
+    background-color: #4a6cf7;
+    color: white;
+    border: none;
+  }
+  
+  .create-btn {
+    background: linear-gradient(45deg, #4a6cf7, #6a11cb);
+    border: none;
+    padding: 8px 16px;
+    transition: all 0.3s;
+    font-weight: 500;
+  }
+  
+  .create-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(106, 17, 203, 0.3);
+  }
+  
+  /* Sort section */
+  .sort-section {
+    padding: 0 10px;
+  }
+  
+  .sort-btn {
+    display: flex;
+    align-items: center;
+    font-size: 0.85rem;
+  }
+  
+  /* Exam cards */
+  .exam-cards {
+    margin-top: 20px;
+  }
+  
+  .exam-card {
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 3px 15px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+    overflow: hidden;
+  }
+  
+  .exam-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  }
+  
+  .hidden-exam {
+    background-color: #f8f9fa;
+    border-left: 4px solid #6c757d;
+  }
+  
+  .exam-card-title {
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 10px;
+  }
+  
+  .category-badge {
+    font-weight: 500;
+    padding: 6px 10px;
+    border-radius: 20px;
+    display: inline-flex;
+    align-items: center;
+    font-size: 0.8rem;
+  }
+  
+  .duration-badge {
+    background-color: #f8f9fa;
+    color: #6c757d;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+  }
+  
+  .exam-description {
+    color: #6c757d;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    margin-bottom: 15px;
+    max-height: 80px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+  }
+  
+  .action-btn {
+    display: flex;
+    align-items: center;
+    font-weight: 500;
+    transition: all 0.2s;
+  }
+  
+  .action-btn:hover {
+    transform: translateY(-2px);
+  }
+  
+  /* Empty state */
+  .empty-state {
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    margin: 30px 0;
+  }
+  
+  /* Pagination */
+  .pagination {
+    margin-top: 30px;
+  }
+  
+  .pagination .page-link {
+    color: #4a6cf7;
+    border-radius: 5px;
+    margin: 0 3px;
+  }
+  
+  .pagination .page-item.active .page-link {
+    background-color: #4a6cf7;
+    border-color: #4a6cf7;
+  }
+  
+  /* Modal styling */
+  .exam-modal .modal-header {
+    background: linear-gradient(45deg, #4a6cf7, #6a11cb);
+    color: white;
+    border-bottom: none;
+  }
+  
+  .exam-modal .modal-title {
+    display: flex;
+    align-items: center;
+    font-weight: 600;
+  }
+  
+  .exam-modal .close {
+    color: white;
+  }
+  
+  .form-input {
+    border-radius: 5px;
+    padding: 10px 15px;
+    border: 1px solid #ced4da;
+    transition: all 0.3s;
+  }
+  
+  .form-input:focus {
+    box-shadow: 0 0 0 0.25rem rgba(74, 108, 247, 0.25);
+    border-color: #4a6cf7;
+  }
+  
+  .form-switch .form-check-input:checked {
+    background-color: #4a6cf7;
+    border-color: #4a6cf7;
+  }
+  
+  .submit-btn {
+    background: linear-gradient(45deg, #4a6cf7, #6a11cb);
+    border: none;
+    padding: 8px 20px;
+    font-weight: 500;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .search-filter-section {
+      padding: 15px;
+    }
+  
+    .search-filter-section .col-md-6:last-child {
+      margin-top: 15px;
+    }
+  
+    .action-btn {
+      padding: 5px 8px;
+      font-size: 0.8rem;
+    }
+  
+    .exam-card-title {
+      font-size: 1.2rem;
+    }
+  }
+  
+  
